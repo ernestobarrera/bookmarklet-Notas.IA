@@ -114,4 +114,4 @@ Este proyecto está licenciado bajo la [Licencia MIT](LICENSE).
 
 ## Autor
 
-- [Tu Nombre](https://github.com/tu_usuario)
+- [Ernesto Barrera](https://github.com/ernestobarrera)
