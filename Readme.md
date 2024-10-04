@@ -1,6 +1,6 @@
 # Bookmarklet de Bloc de Notas con Funciones de Copiar y Dictado de Voz
 
-Este repositorio contiene un bookmarklet que abre una nueva pestaña con un bloc de notas simple. Incluye botones para copiar el contenido como texto plano o texto enriquecido (HTML), permite guardar el contenido mediante `Ctrl + S` y soporta dictado de voz usando la tecla **Windows + H**.
+Este repositorio contiene el bookmarklet NotaPad🗒️. Al pulsarlo abre una nueva pestaña con un bloc de notas simple. Incluye botones para copiar el contenido como texto plano o texto enriquecido (HTML), permite guardar el contenido mediante `Ctrl + S` y soporta dictado de voz usando la tecla **Windows + H**.
 
 ## Características
 
