@@ -1,6 +1,16 @@
 javascript: (function () {
-  /* Función para obtener el texto seleccionado */
-  const getSelectedText = () => window.getSelection().toString();
+  /* Función para obtener el contenido seleccionado */
+  const getSelectedContent = () => {
+    const selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const clonedSelection = range.cloneContents();
+      const div = document.createElement('div');
+      div.appendChild(clonedSelection);
+      return div.innerHTML;
+    }
+    return '';
+  };
 
   /* Función para crear el documento HTML */
   const createHTMLDocument = () => {
@@ -39,7 +49,7 @@ javascript: (function () {
               font-size: 1.7rem;
               resize: vertical;
               overflow: auto;
-              margin-bottom: 220px; /* Ajuste para permitir scroll completo */
+              margin-bottom: 220px;
             }
             #notepad a {
               color: #0066cc;
@@ -125,8 +135,9 @@ javascript: (function () {
               <button id="copyPlainButton" class="copyButton">Copiar texto plano</button>
               <button id="copyRichButton" class="copyButton">Copiar texto enriquecido</button>
               <button id="convertMarkdownButton" class="copyButton">Convertir Markdown y Copiar</button>
-              <button id="clearButton" class="copyButton">Limpiar texto</button>
               <button id="undoButton" class="copyButton">Deshacer</button>
+              <button id="clearButton" class="copyButton">Limpiar texto</button>
+              
             </div>
             <div id="statsContainer">
               <div class="statItem">
@@ -188,7 +199,7 @@ javascript: (function () {
     const styles = new Set();
 
     if (notepad.innerText.trim() === '') {
-      styleInfo.innerHTML = ''; /* No mostrar estilos si no hay texto */
+      styleInfo.innerHTML = '';
       return;
     }
 
@@ -220,7 +231,9 @@ javascript: (function () {
   const copyPlainText = function () {
     const notepad = this.document.getElementById('notepad');
     const text = notepad.innerText || notepad.textContent;
-    this.navigator.clipboard.writeText(text);
+    this.navigator.clipboard.writeText(text).then(() => {
+      notepad.focus();
+    });
   };
 
   /* Función para copiar texto enriquecido */
@@ -233,6 +246,7 @@ javascript: (function () {
     selection.addRange(range);
     this.document.execCommand('copy');
     selection.removeAllRanges();
+    notepad.focus();
   };
 
   /* Función para limpiar el texto */
@@ -240,23 +254,26 @@ javascript: (function () {
     const notepad = this.document.getElementById('notepad');
     notepad.innerHTML = '';
     updateStats.call(this);
-    notepad.focus(); /* Posicionar el cursor en la caja después de limpiar */
+    notepad.focus();
   };
 
   /* Función para deshacer */
   const undo = function () {
     this.document.execCommand('undo');
     updateStats.call(this);
+    this.document.getElementById('notepad').focus();
   };
 
   /* Función para convertir Markdown y copiar */
   const convertMarkdownAndCopy = function () {
     const notepad = this.document.getElementById('notepad');
+    const originalContent = notepad.innerHTML;
     let markdown = notepad.innerText || notepad.textContent;
 
     const markdownRegex = /(\*\*|__|\*|_|~~|`|\[|\]|\(|\)|#|>|-|\d+\.|\!)/;
     if (!markdownRegex.test(markdown)) {
-      return; /* Si no hay Markdown, simplemente salimos de la función sin hacer nada */
+      notepad.focus();
+      return;
     }
 
     markdown = markdown.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
@@ -288,14 +305,20 @@ javascript: (function () {
 
     html = html.replace(/<\/ul><ul>|<\/ol><ol>/gim, '').trim();
 
+/*     Guardar el estado actual en el historial de deshacer
+ */    this.document.execCommand('insertHTML', false, originalContent);
+
+    /*    Aplicar la conversión de Markdown */
     notepad.innerHTML = html;
+
     copyRichText.call(this);
     updateStats.call(this);
+    notepad.focus();
   };
 
   /* Función principal */
   const main = () => {
-    const selectedText = getSelectedText();
+    const selectedContent = getSelectedContent();
     const doc = createHTMLDocument();
     const newTab = window.open('about:blank', '_blank');
     newTab.document.write(doc.documentElement.outerHTML);
@@ -303,13 +326,20 @@ javascript: (function () {
 
     newTab.onload = function () {
       const notepad = this.document.getElementById('notepad');
-      if (selectedText) {
-        notepad.innerText = selectedText;
+      if (selectedContent) {
+        notepad.innerHTML = selectedContent;
       }
 
       notepad.focus();
       notepad.addEventListener('input', updateStats.bind(this));
-      this.document.addEventListener('keydown', saveNote.bind(this));
+      this.document.addEventListener('keydown', function (e) {
+        if (e.ctrlKey && e.key === 'z') {
+          e.preventDefault();
+          undo.call(this);
+        } else {
+          saveNote.call(this, e);
+        }
+      }.bind(this));
       this.document.getElementById('copyPlainButton').addEventListener('click', copyPlainText.bind(this));
       this.document.getElementById('copyRichButton').addEventListener('click', copyRichText.bind(this));
       this.document.getElementById('convertMarkdownButton').addEventListener('click', convertMarkdownAndCopy.bind(this));
