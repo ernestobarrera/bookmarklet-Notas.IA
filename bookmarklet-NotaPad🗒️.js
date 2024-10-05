@@ -39,6 +39,7 @@ javascript: (function () {
               font-size: 1.7rem;
               resize: vertical;
               overflow: auto;
+              margin-bottom: 220px; /* Ajuste para permitir scroll completo */
             }
             #notepad a {
               color: #0066cc;
@@ -125,6 +126,7 @@ javascript: (function () {
               <button id="copyRichButton" class="copyButton">Copiar texto enriquecido</button>
               <button id="convertMarkdownButton" class="copyButton">Convertir Markdown y Copiar</button>
               <button id="clearButton" class="copyButton">Limpiar texto</button>
+              <button id="undoButton" class="copyButton">Deshacer</button>
             </div>
             <div id="statsContainer">
               <div class="statItem">
@@ -185,15 +187,15 @@ javascript: (function () {
     const styleInfo = this.document.getElementById('styleInfo');
     const styles = new Set();
 
-    const getComputedStylesForNode = (node) => {
-      const style = this.window.getComputedStyle(node);
-      styles.add(`Fuente: ${style.fontFamily.split(',')[0].trim()}`);
-      styles.add(`Tamaño: ${style.fontSize}`);
-      styles.add(`Color: ${style.color}`);
-    };
+    if (notepad.innerText.trim() === '') {
+      styleInfo.innerHTML = ''; /* No mostrar estilos si no hay texto */
+      return;
+    }
 
-    getComputedStylesForNode(notepad);
-    Array.from(notepad.getElementsByTagName('*')).forEach(getComputedStylesForNode);
+    const style = this.window.getComputedStyle(notepad);
+    styles.add(`Fuente: ${style.fontFamily.split(',')[0].trim()}`);
+    styles.add(`Tamaño: ${style.fontSize}`);
+    styles.add(`Color: ${style.color}`);
 
     styleInfo.innerHTML = '<b>Estilos detectados:</b> ' + Array.from(styles).join(' | ');
   };
@@ -235,7 +237,15 @@ javascript: (function () {
 
   /* Función para limpiar el texto */
   const clearText = function () {
-    this.document.getElementById('notepad').innerHTML = '';
+    const notepad = this.document.getElementById('notepad');
+    notepad.innerHTML = '';
+    updateStats.call(this);
+    notepad.focus(); /* Posicionar el cursor en la caja después de limpiar */
+  };
+
+  /* Función para deshacer */
+  const undo = function () {
+    this.document.execCommand('undo');
     updateStats.call(this);
   };
 
@@ -246,8 +256,7 @@ javascript: (function () {
 
     const markdownRegex = /(\*\*|__|\*|_|~~|`|\[|\]|\(|\)|#|>|-|\d+\.|\!)/;
     if (!markdownRegex.test(markdown)) {
-      alert("No se detectó contenido Markdown. No se realizaron cambios.");
-      return;
+      return; /* Si no hay Markdown, simplemente salimos de la función sin hacer nada */
     }
 
     markdown = markdown.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
@@ -266,7 +275,7 @@ javascript: (function () {
       unorderedList: [/^[\*\-] (.*$)/gim, '<ul><li>$1</li></ul>'],
       orderedList: [/^\d+\. (.*$)/gim, '<ol><li>$1</li></ol>'],
       code: [/`(.*?)`/gim, '<code>$1</code>'],
-      link: [/\[(.*?)\]\((.*?)\)/gim, '<a href="$2" target="_blank">$1</a>'],
+      link: [/\[(.*?)\]\((.*?)\)/gim, '<a href="$2">$1</a>'],
       image: [/!\[(.*?)\]\((.*?)\)/gim, '<img alt="$1" src="$2">'],
       horizontalRule: [/^(?:---|\*\*\*|-\s-\s-)$/gim, '<hr>'],
       lineBreak: [/\n\n/g, '<br><br>']
@@ -305,6 +314,8 @@ javascript: (function () {
       this.document.getElementById('copyRichButton').addEventListener('click', copyRichText.bind(this));
       this.document.getElementById('convertMarkdownButton').addEventListener('click', convertMarkdownAndCopy.bind(this));
       this.document.getElementById('clearButton').addEventListener('click', clearText.bind(this));
+      this.document.getElementById('undoButton').addEventListener('click', undo.bind(this));
+
       updateStats.call(this);
     };
   };
