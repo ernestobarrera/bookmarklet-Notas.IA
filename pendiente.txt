@@ -1,4 +1,5 @@
 -Añade un contador de tiempo de lectura (en minutos y segundos) con un promedio de lectura de 250 palabras por minuto
+-Detector de estilos: fuentes, tamaños, etc. junto a promedio
 -El área con contadores, ponla detrás de los botones.
 - Otro botón de limpiar caja de texto
 -Si parto de una web con texto seleccionado y pulso al bookmarklet, ponerlo en la caja al abrir notas
