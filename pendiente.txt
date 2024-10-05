@@ -1,5 +1,9 @@
--El área con contadores, ponla detrás de los botones. 
-  El control+z no funciona tras pulsar el botón de convertir a markdown  Cuando pego el texto despues de algunas modificaciones, se pega todo en negrita. Esto pasa por ejemplo cuando copio texto plano y lo pego, que aparece todo en negrita
-  Se añaden espacios en blanco 
-  Palabras empieza con 1
-  Los enlaces no funcionan en la caja, aunque aparecen como texto enriquecido
+-El área con contadores, ponla detrás de los botones.
+- Otro botón de limpiar caja de texto
+-Mantener el área de contadores y botones siempre visible en bottom.
+-El control+z no funciona tras pulsar el botón de convertir a markdown  Cuando pego el texto despues de algunas modificaciones, se pega todo en negrita. Esto pasa por ejemplo cuando copio texto plano y lo pego, que aparece todo en negrita
+- Se añaden espacios en blanco 
+ - Palabras empieza con 1
+-Los enlaces no funcionan en la caja, aunque aparecen como texto enriquecido
+
+  

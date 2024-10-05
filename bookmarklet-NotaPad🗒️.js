@@ -82,13 +82,7 @@ javascript: (function () {
           2.2 Comandos útiles: "nuevo párrafo", "borra eso", "detén el dictado"<br>
         3. Ctrl+S para guardar<br>
         4. Cerrar o F5 borra todo<br>
-        5. Atajos útiles:<br>
-          • Ctrl+Z: Deshacer<br>
-          • Ctrl+Y o Ctrl+Shift+Z: Rehacer<br>
-          • Ctrl+X: Cortar<br>
-          • Ctrl+C: Copiar<br>
-          • Ctrl+V: Pegar<br>
-          • Ctrl+A: Seleccionar todo
+        5. Atajos útiles: Ctrl+Z: Deshacer | Ctrl+Y o Ctrl+Shift+Z: Rehacer | Ctrl+X: Cortar | Ctrl+C: Copiar | Ctrl+V: Pegar | Ctrl+A: Seleccionar todo
     </div>
     <div id="statsContainer">
         <div class="statItem">
