@@ -57,65 +57,76 @@ javascript: (function () {
               cursor: pointer;
             }
             #fixedPanel {
-              position: fixed;
-              bottom: 0;
-              left: 0;
-              right: 0;
-              background-color: #f0f0f0;
-              padding: 1rem;
-              box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            }
-            #buttonContainer {
-              display: flex;
-              justify-content: center;
-              gap: 1rem;
-              flex-wrap: wrap;
-              margin-bottom: 1rem;
-            }
-            .copyButton {
-              padding: 0.5rem 1rem;
-              font-size: 1rem;
-              background-color: #4CAF50;
-              color: white;
-              border: none;
-              border-radius: 5px;
-              cursor: pointer;
-              box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-              transition: all 0.3s ease;
-            }
-            #clearButton {
-              background-color: #f44336;
-            }
-            .copyButton:hover {
-              opacity: 0.9;
-            }
-            .copyButton:active {
-              box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-              transform: translateY(2px);
-            }
-            #statsContainer {
-              display: flex;
-              justify-content: space-around;
-              flex-wrap: wrap;
-              background-color: #e0e0e0;
-              padding: 0.7rem;
-              border-radius: 5px;
-              font-size: 1rem;
-            }
-            .statItem {
-              text-align: center;
-              margin: 0.5rem;
-              flex: 1 1 auto;
-            }
-            .statValue {
-              font-size: 1.2rem;
-              font-weight: bold;
-            }
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #f0f0f0;
+  padding: 1rem;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  max-height: 40vh;
+  overflow-y: auto;
+}
+#statsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  background-color: #e0e0e0;
+  padding: 0.7rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+.statItem {
+  text-align: center;
+  margin: 0.3rem;
+  flex: 1 1 calc(14% - 0.6rem);
+  min-width: 80px;
+}
+.statValue {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+  #interpretation {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
             #styleInfo {
               margin-top: 0.5rem;
               font-size: 1rem;
               line-height: 1.3;
             }
+              #buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.copyButton {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+#clearButton {
+  background-color: #f44336;
+}
+.copyButton:hover {
+  opacity: 0.9;
+}
+.copyButton:active {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transform: translateY(2px);
+}
           </style>
         </head>
         <body>
@@ -140,23 +151,37 @@ javascript: (function () {
               
             </div>
             <div id="statsContainer">
-              <div class="statItem">
-                <div>Palabras</div>
-                <div id="wordCount" class="statValue">0</div>
-              </div>
-              <div class="statItem">
-                <div>Caracteres</div>
-                <div id="charCount" class="statValue">0</div>
-              </div>
-              <div class="statItem">
-                <div>Tokens</div>
-                <div id="tokenCount" class="statValue">0</div>
-              </div>
-              <div class="statItem">
-                <div>Tiempo de lectura</div>
-                <div id="readTime" class="statValue">0 min 0 seg</div>
-              </div>
-            </div>
+  <div class="statItem">
+    <div>Palabras</div>
+    <div id="wordCount" class="statValue">0</div>
+  </div>
+  <div class="statItem">
+    <div>Caracteres</div>
+    <div id="charCount" class="statValue">0</div>
+  </div>
+  <div class="statItem">
+    <div>Frases</div>
+    <div id="sentenceCount" class="statValue">0</div>
+  </div>
+  <div class="statItem">
+    <div>Palabras/Frase</div>
+    <div id="avgWordsPerSentence" class="statValue">0</div>
+  </div>
+  <div class="statItem">
+    <div>Párrafos</div>
+    <div id="paragraphCount" class="statValue">0</div>
+  </div>
+  <div class="statItem">
+    <div>Tokens</div>
+    <div id="tokenCount" class="statValue">0</div>
+  </div>
+  <div class="statItem">
+    <div>Tiempo de lectura</div>
+    <div id="readTime" class="statValue">0 min 0 seg</div>
+  </div>
+</div>
+<div id="interpretation">Resumen: Analizando texto...</div>
+
             <div id="styleInfo"></div>
           </div>
         </body>
@@ -171,23 +196,82 @@ javascript: (function () {
     const d = new Date(date);
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}-${pad(d.getHours())}-${pad(d.getMinutes())}-${pad(d.getSeconds())}`;
   };
+  /* Nuevo para ampliar estadísticas */
+  const countSentences = (text) => {
+    return text.split(/[.!?]+/).length - 1;
+  };
 
+  const calculateAverageWordsPerSentence = (wordCount, sentenceCount) => {
+    return sentenceCount > 0 ? (wordCount / sentenceCount).toFixed(1) : 0;
+  };
+
+  const countParagraphs = (text) => {
+    return text.split(/\n\n+/).length;
+  };
+
+  const interpretMetrics = (metrics) => {
+    let interpretation = "Resumen: ";
+
+    if (metrics.wordCount < 100) {
+      interpretation += "Texto corto. ";
+    } else if (metrics.wordCount < 500) {
+      interpretation += "Texto de longitud media. ";
+    } else {
+      interpretation += "Texto largo. ";
+    }
+
+    if (metrics.avgWordsPerSentence < 10) {
+      interpretation += "Oraciones muy cortas, fácil de leer. ";
+    } else if (metrics.avgWordsPerSentence < 20) {
+      interpretation += "Oraciones de longitud moderada, buena legibilidad. ";
+    } else {
+      interpretation += "Oraciones largas, puede ser más difícil de leer. ";
+    }
+
+    if (metrics.paragraphCount < 3) {
+      interpretation += "Pocos párrafos, considera dividir el texto para mejor lectura.";
+    } else {
+      interpretation += "Buena división en párrafos, facilita la lectura.";
+    }
+
+    return interpretation;
+  };
   /* Función para actualizar las estadísticas */
   const updateStats = function () {
     const notepad = this.document.getElementById('notepad');
     const text = notepad.innerText || notepad.textContent;
 
-    const words = text.trim().split(/\s+/).filter(word => word.length > 0).length;
-    const chars = text.length;
-    const tokens = Math.ceil(chars / 4);
+    const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+    const wordCount = words.length;
+    const charCount = text.replace(/\s+/g, '').length;
+    const sentenceCount = countSentences(text);
+    const avgWordsPerSentence = calculateAverageWordsPerSentence(wordCount, sentenceCount);
+    const paragraphCount = countParagraphs(text);
+    const tokens = Math.ceil(charCount / 4);
     const wordsPerMinute = 250;
-    const minutes = Math.floor(words / wordsPerMinute);
-    const seconds = Math.round((words % wordsPerMinute) / (wordsPerMinute / 60));
+    const readTimeSeconds = Math.round((wordCount / wordsPerMinute) * 60);
+    const minutes = Math.floor(readTimeSeconds / 60);
+    const seconds = readTimeSeconds % 60;
 
-    this.document.getElementById('wordCount').textContent = words;
-    this.document.getElementById('charCount').textContent = chars;
+    const metrics = {
+      wordCount,
+      charCount,
+      sentenceCount,
+      avgWordsPerSentence,
+      paragraphCount,
+      tokens,
+      readTime: `${minutes} min ${seconds} seg`
+    };
+
+    this.document.getElementById('wordCount').textContent = wordCount;
+    this.document.getElementById('charCount').textContent = charCount;
+    this.document.getElementById('sentenceCount').textContent = sentenceCount;
+    this.document.getElementById('avgWordsPerSentence').textContent = avgWordsPerSentence;
+    this.document.getElementById('paragraphCount').textContent = paragraphCount;
     this.document.getElementById('tokenCount').textContent = tokens;
-    this.document.getElementById('readTime').textContent = `${minutes} min ${seconds} seg`;
+    this.document.getElementById('readTime').textContent = metrics.readTime;
+
+    this.document.getElementById('interpretation').textContent = interpretMetrics(metrics);
 
     analyzeStyles.call(this);
   };
