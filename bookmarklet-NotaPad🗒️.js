@@ -280,6 +280,7 @@ javascript: (function () {
   const analyzeStyles = function () {
     const notepad = this.document.getElementById('notepad');
     const styleInfo = this.document.getElementById('styleInfo');
+    const selection = this.window.getSelection();
     const styles = new Set();
 
     if (notepad.innerText.trim() === '') {
@@ -287,12 +288,29 @@ javascript: (function () {
       return;
     }
 
-    const style = this.window.getComputedStyle(notepad);
-    styles.add(`Fuente: ${style.fontFamily.split(',')[0].trim()}`);
-    styles.add(`Tamaño: ${style.fontSize}`);
-    styles.add(`Color: ${style.color}`);
+    const analyzeNode = (node) => {
+      const style = this.window.getComputedStyle(node);
+      styles.add(`Fuente: ${style.fontFamily.split(',')[0].trim()}`);
+      styles.add(`Tamaño: ${style.fontSize}`);
+      styles.add(`Color: ${style.color}`);
+      if (style.fontWeight !== 'normal') styles.add(`Peso: ${style.fontWeight}`);
+      if (style.fontStyle !== 'normal') styles.add(`Estilo: ${style.fontStyle}`);
+      if (style.textDecoration !== 'none') styles.add(`Decoración: ${style.textDecoration}`);
+    };
 
-    styleInfo.innerHTML = '<b>Estilos detectados:</b> ' + Array.from(styles).join(' | ');
+    if (selection && !selection.isCollapsed) {
+      const range = selection.getRangeAt(0);
+      const container = range.commonAncestorContainer;
+      if (container.nodeType === Node.TEXT_NODE) {
+        analyzeNode(container.parentNode);
+      } else {
+        analyzeNode(container);
+      }
+      styleInfo.innerHTML = '<b>Estilos detectados en la selección:</b> ' + Array.from(styles).join(' | ');
+    } else {
+      analyzeNode(notepad);
+      styleInfo.innerHTML = '<b>Estilos detectados:</b> ' + Array.from(styles).join(' | ');
+    }
   };
 
   /* Función para guardar la nota */
@@ -415,7 +433,11 @@ javascript: (function () {
       }
 
       notepad.focus();
-      notepad.addEventListener('input', updateStats.bind(this));
+      notepad.addEventListener('input', function () {
+        updateStats.call(this);
+        analyzeStyles.call(this);
+      }.bind(this));
+      notepad.addEventListener('mouseup', updateStats.bind(this));
       this.document.addEventListener('keydown', function (e) {
         if (e.ctrlKey && e.key === 'z') {
           e.preventDefault();
