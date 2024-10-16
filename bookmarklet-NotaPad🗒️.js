@@ -13,6 +13,7 @@ javascript: (function () {
   };
 
   /* Función para crear el documento HTML */
+
   const createHTMLDocument = () => {
     const doc = document.implementation.createHTMLDocument("NOTAS");
     doc.documentElement.innerHTML = `
@@ -21,13 +22,14 @@ javascript: (function () {
           <meta charset="utf-8">
           <title>NOTAS</title>
           <style>
+          
             body {
               font: 1.8rem/1.5 monospace;
               margin: 0;
               padding: 1rem;
-              padding-bottom: 220px;
               background-color: #f0f0f0;
-              height: 100vh;
+              min-height: 100vh;
+              padding-bottom: 300px;
               box-sizing: border-box;
             }
             #instructions {
