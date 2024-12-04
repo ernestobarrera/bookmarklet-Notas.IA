@@ -4,7 +4,164 @@ javascript: /*!
 * Autor: Ernesto Barrera 
 * Repositorio: https://github.com/ernestobarrera/Bookmarklet-Notas
 * License: MIT 
+* Fuente legibilidad 
 */(function () {
+  const LanguageDetector = {
+    spanishPatterns: {
+      articles: /\b(el|la|los|las|un|una|unos|unas)\b/gi,
+      conjunctions: /\b(y|e|o|u|pero|sino|porque|que|si)\b/gi,
+      prepositions: /\b(de|del|a|al|en|por|para|con|sin|sobre)\b/gi,
+      pronouns: /\b(yo|tú|él|ella|nosotros|vosotros|ellos|ellas|me|te|se|nos|os)\b/gi,
+      accents: /[áéíóúñ¿¡]/g,
+      commonWords: /\b(está|son|ser|estar|tiene|hace|muy|más|también|todo|cuando|hay)\b/gi
+    },
+
+    englishPatterns: {
+      articles: /\b(the|a|an)\b/gi,
+      conjunctions: /\b(and|or|but|because|if|so)\b/gi,
+      prepositions: /\b(in|on|at|to|for|with|by|from|of)\b/gi,
+      pronouns: /\b(i|you|he|she|it|we|they|me|him|her|us|them)\b/gi,
+      auxiliaries: /\b(is|are|was|were|have|has|had|do|does|did)\b/gi,
+      commonWords: /\b(this|that|these|those|there|here|what|when|where|who|which)\b/gi
+    },
+
+    calculateLanguageScore: function (text, patterns) {
+      let score = 0;
+      for (const category in patterns) {
+        const matches = text.match(patterns[category]) || [];
+        score += matches.length;
+      }
+      return score;
+    },
+
+    detectTechnicalTerms: function (text) {
+      const technicalPatterns = /\b(software|hardware|web|online|internet|email|smartphone|computer|app|website|cloud|server|database|api|framework|frontend|backend|browser|cookie|cache|debug|interface|network|plugin|script|update)\b/gi;
+      const matches = text.match(technicalPatterns) || [];
+      return matches.length;
+    },
+
+    analyzeLanguageDistribution: function (text) {
+      const spanishScore = this.calculateLanguageScore(text, this.spanishPatterns);
+      const englishScore = this.calculateLanguageScore(text, this.englishPatterns);
+      const technicalTerms = this.detectTechnicalTerms(text);
+
+      const adjustedEnglishScore = englishScore - (technicalTerms * 0.75);
+
+      const total = spanishScore + adjustedEnglishScore;
+      const spanishPercentage = (spanishScore / total) * 100;
+
+      return {
+        mainLanguage: spanishScore > adjustedEnglishScore ? 'es' : 'en',
+        spanishPercentage: spanishPercentage.toFixed(1),
+        technicalTerms: technicalTerms,
+        isHybrid: spanishPercentage > 15 && spanishPercentage < 85
+      };
+    },
+
+    generateLanguageReport: function (text) {
+      const analysis = this.analyzeLanguageDistribution(text);
+
+      let message = '';
+      if (analysis.isHybrid) {
+        message = `Texto mixto (${analysis.spanishPercentage}% español) con ${analysis.technicalTerms} términos técnicos. `;
+        message += 'Aplicando análisis de legibilidad para el idioma predominante.';
+      } else {
+        message = analysis.mainLanguage === 'es'
+          ? `Texto principalmente en español (${analysis.spanishPercentage}%) con terminología técnica.`
+          : `Texto principalmente en inglés con algunos términos en español.`;
+      }
+
+      return {
+        languageInfo: message,
+        detectedLanguage: analysis.mainLanguage,
+        isHybrid: analysis.isHybrid
+      };
+    }
+  };
+  /* Analizador de legibilidad */
+  const ReadabilityAnalyzer = {
+    countSyllables: function (word, lang) {
+      word = word.toLowerCase();
+
+      if (lang === 'es') {
+        word = word.replace(/[áéíóú]/g, 'a')
+          .replace(/[üï]/g, 'i')
+          .replace(/[^a-z]/g, '');
+
+        const diphthongs = /(ai|au|ei|eu|io|ou|oi|ui|iu|ie|ue|ua)/g;
+        const triphthongs = /(uai|iai|uei|ioi)/g;
+
+        const vowelGroups = word.match(/[aeiou]+/g) || [];
+        let count = vowelGroups.length;
+
+        const diphthongCount = (word.match(diphthongs) || []).length;
+        const triphthongCount = (word.match(triphthongs) || []).length;
+
+        count = count - diphthongCount - (triphthongCount * 2);
+
+        return count || 1;
+      } else {
+        word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '')
+          .replace(/^y/, '');
+
+        return (word.match(/[aeiouy]{1,2}/g) || []).length || 1;
+      }
+    },
+
+    calculateSpanishIndex: function (syllables, words, sentences) {
+      return 206.835 - (62.3 * (syllables / words)) - (words / sentences);
+    },
+
+    calculateEnglishIndex: function (syllables, words, sentences) {
+      return 206.835 - (1.015 * (words / sentences)) - (84.6 * (syllables / words));
+    },
+
+    interpretScore: function (score, lang) {
+      if (lang === 'es') {
+        if (score <= 40) return "Muy difícil (Nivel universitario o científico)";
+        if (score <= 55) return "Algo difícil (Bachillerato, divulgación científica)";
+        if (score <= 65) return "Normal (ESO, prensa general)";
+        if (score <= 80) return "Bastante fácil (Educación primaria, prensa deportiva)";
+        return "Muy fácil (Educación primaria, comics)";
+      } else {
+        if (score >= 90) return "Very easy (5th grade)";
+        if (score >= 80) return "Easy (6th grade)";
+        if (score >= 70) return "Fairly easy (7th grade)";
+        if (score >= 60) return "Standard (8th-9th grade)";
+        if (score >= 50) return "Fairly difficult (10th-12th grade)";
+        if (score >= 30) return "Difficult (College)";
+        return "Very difficult (College graduate)";
+      }
+    },
+
+    analyzeText: function (text) {
+      const languageInfo = LanguageDetector.generateLanguageReport(text);
+      const lang = languageInfo.detectedLanguage;
+      const cleanText = text.replace(/\s+/g, ' ').trim();
+      const words = cleanText.split(/\s+/).filter(w => w.length > 0);
+      const sentences = cleanText.split(/[.!?]+/).filter(s => s.trim().length > 0);
+
+      const syllables = words.reduce((acc, word) =>
+        acc + this.countSyllables(word, lang), 0);
+
+      const score = lang === 'es'
+        ? this.calculateSpanishIndex(syllables, words.length, sentences.length)
+        : this.calculateEnglishIndex(syllables, words.length, sentences.length);
+
+      return {
+        language: lang,
+        syllables,
+        words: words.length,
+        sentences: sentences.length,
+        syllablesPerWord: (syllables / words.length).toFixed(2),
+        wordsPerSentence: (words.length / sentences.length).toFixed(2),
+        readabilityScore: score.toFixed(2),
+        interpretation: this.interpretScore(score, lang),
+        languageInfo: languageInfo.languageInfo,
+        isHybrid: languageInfo.isHybrid
+      };
+    }
+  };
   /* Función para obtener el contenido seleccionado */
   const getSelectedContent = () => {
     const selection = window.getSelection();
@@ -203,6 +360,14 @@ javascript: /*!
             <div>Tiempo de lectura</div>
             <div id="readTime" class="statValue">0 min 0 seg</div>
           </div>
+          <div class="statItem">
+  <div>Idioma</div>
+  <div id="detectedLanguage" class="statValue">-</div>
+</div>
+<div class="statItem">
+  <div>Legibilidad</div>
+  <div id="readabilityScore" class="statValue">-</div>
+</div>
         </div>
         <div id="interpretation">Resumen: Analizando texto...</div>
 
@@ -279,6 +444,7 @@ javascript: /*!
     const notepad = this.document.getElementById('notepad');
     const text = notepad.innerText || notepad.textContent;
 
+    /*    Estadísticas básicas existentes */
     const words = text.trim().split(/\s+/).filter(word => word.length > 0);
     const wordCount = words.length;
     const charCount = text.replace(/\s+/g, '').length;
@@ -290,30 +456,49 @@ javascript: /*!
       .replace(/[^\w\s']/g, '')
       .split(/\s+/)
       .filter(word => word.length > 1).length;
+
+    /*     Tiempo de lectura */
     const wordsPerMinute = 250;
     const readTimeSeconds = Math.round((wordCount / wordsPerMinute) * 60);
     const minutes = Math.floor(readTimeSeconds / 60);
     const seconds = readTimeSeconds % 60;
 
-    const metrics = {
-      wordCount,
-      charCount,
-      sentenceCount,
-      avgWordsPerSentence,
-      paragraphCount,
-      tokenCount,
-      readTime: `${minutes} min ${seconds} seg`
-    };
-
+    /* Análisis de legibilidad */
+    let readabilityResults;
+    if (ReadabilityAnalyzer && typeof ReadabilityAnalyzer.analyzeText === 'function') {
+      readabilityResults = ReadabilityAnalyzer.analyzeText(text);
+    } else {
+      readabilityResults = {
+        language: 'es',
+        readabilityScore: 0,
+        interpretation: ''
+      };
+    }
+    /*  Actualizar todos los elementos */
     this.document.getElementById('wordCount').textContent = wordCount;
     this.document.getElementById('charCount').textContent = charCount;
     this.document.getElementById('sentenceCount').textContent = sentenceCount;
     this.document.getElementById('avgWordsPerSentence').textContent = avgWordsPerSentence;
     this.document.getElementById('paragraphCount').textContent = paragraphCount;
     this.document.getElementById('tokenCount').textContent = tokenCount;
-    this.document.getElementById('readTime').textContent = metrics.readTime;
+    this.document.getElementById('readTime').textContent = `${minutes} min ${seconds} seg`;
 
-    this.document.getElementById('interpretation').textContent = interpretMetrics(metrics);
+    /* Actualizar nuevos elementos */
+    this.document.getElementById('detectedLanguage').textContent =
+      readabilityResults.language === 'es' ? 'Español' : 'English';
+    this.document.getElementById('readabilityScore').textContent =
+      readabilityResults.readabilityScore;
+
+    /* Actualizar interpretación */
+    this.document.getElementById('interpretation').textContent =
+      `${interpretMetrics({
+        wordCount,
+        charCount,
+        sentenceCount,
+        avgWordsPerSentence,
+        paragraphCount,
+        tokenCount
+      })} ${readabilityResults.interpretation}`;
 
     analyzeStyles.call(this);
   };
@@ -476,6 +661,10 @@ javascript: /*!
 
   /* Función principal */
   const main = () => {
+    /* Detector de idioma */
+
+
+
     const selectedContent = getSelectedContent();
     const doc = createHTMLDocument();
     const newTab = window.open('about:blank', '_blank');
