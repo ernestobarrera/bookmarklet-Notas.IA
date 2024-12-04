@@ -1,4 +1,9 @@
-javascript: (function () {
+javascript: /*!
+* Notes Editor Bookmarklet v1.0.0
+* Last updated: 2024-12-04
+* Autor: Ernesto Barrera https://github.com/ernestobarrera/Bookmarklet-Notas
+* License: MIT 
+*/(function () {
   /* Función para obtener el contenido seleccionado */
   const getSelectedContent = () => {
     const selection = window.getSelection();
