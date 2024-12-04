@@ -65,136 +65,157 @@ javascript: /*!
               cursor: pointer;
             }
             #fixedPanel {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #f0f0f0;
-  padding: 1rem;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-  max-height: 40vh;
-  overflow-y: auto;
-}
-#statsContainer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  background-color: #e0e0e0;
-  padding: 0.7rem;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-}
-.statItem {
-  text-align: center;
-  margin: 0.3rem;
-  flex: 1 1 calc(14% - 0.6rem);
-  min-width: 80px;
-}
-.statValue {
-  font-size: 1.1rem;
-  font-weight: bold;
-}
-  #interpretation {
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 0.5rem;
-}
-
-            #styleInfo {
-              margin-top: 0.5rem;
-              font-size: 1rem;
-              line-height: 1.3;
+              position: fixed;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              background-color: #f0f0f0;
+              padding: 1rem;
+              box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+              max-height: 40vh;
+              overflow-y: auto;
             }
-              #buttonContainer {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-}
-.copyButton {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  transition: all 0.3s ease;
-}
-#clearButton {
-  background-color: #f44336;
-}
-.copyButton:hover {
-  opacity: 0.9;
-}
-.copyButton:active {
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-  transform: translateY(2px);
-}
-          </style>
-        </head>
-        <body>
-          <div id="instructions">
-            <b>Instrucciones:</b><br>
-            1. Escribe o pega (Ctrl+Shift+V sin formato)<br>
-            2. Usa Windows + H para dictar con la voz<br>
-              2.1 Para puntuación y símbolos, di: "coma", "punto", "signo de interrogación", etc.<br>
-              2.2 Comandos útiles: "nuevo párrafo", "borra eso", "detén el dictado"<br>
-            3. Ctrl+S para guardar<br>
-            4. Cerrar o F5 borra todo<br>
-            5. Atajos útiles: Ctrl+Z: Deshacer | Ctrl+Y o Ctrl+Shift+Z: Rehacer | Ctrl+X: Cortar | Ctrl+C: Copiar | Ctrl+V: Pegar | Ctrl+A: Seleccionar todo
-          </div>
-          <div id="notepad" contenteditable></div>
-          <div id="fixedPanel">
-            <div id="buttonContainer">
-              <button id="copyPlainButton" class="copyButton">Copiar texto plano</button>
-              <button id="copyRichButton" class="copyButton">Copiar texto enriquecido</button>
-              <button id="convertMarkdownButton" class="copyButton">Convertir Markdown y Copiar</button>
-              <button id="undoButton" class="copyButton">Deshacer</button>
-              <button id="clearButton" class="copyButton">Limpiar texto</button>
-              
-            </div>
-            <div id="statsContainer">
-  <div class="statItem">
-    <div>Palabras</div>
-    <div id="wordCount" class="statValue">0</div>
-  </div>
-  <div class="statItem">
-    <div>Caracteres</div>
-    <div id="charCount" class="statValue">0</div>
-  </div>
-  <div class="statItem">
-    <div>Frases</div>
-    <div id="sentenceCount" class="statValue">0</div>
-  </div>
-  <div class="statItem">
-    <div>Palabras/Frase</div>
-    <div id="avgWordsPerSentence" class="statValue">0</div>
-  </div>
-  <div class="statItem">
-    <div>Párrafos</div>
-    <div id="paragraphCount" class="statValue">0</div>
-  </div>
-  <div class="statItem">
-    <div>Tokens</div>
-    <div id="tokenCount" class="statValue">0</div>
-  </div>
-  <div class="statItem">
-    <div>Tiempo de lectura</div>
-    <div id="readTime" class="statValue">0 min 0 seg</div>
-  </div>
-</div>
-<div id="interpretation">Resumen: Analizando texto...</div>
+        #statsContainer {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          background-color: #e0e0e0;
+          padding: 0.7rem;
+          border-radius: 5px;
+          font-size: 0.9rem;
+          margin-bottom: 1rem;
+        }
+        .statItem {
+          text-align: center;
+          margin: 0.3rem;
+          flex: 1 1 calc(14% - 0.6rem);
+          min-width: 80px;
+        }
+        .statValue {
+          font-size: 1.1rem;
+          font-weight: bold;
+        }
+          #interpretation {
+          font-size: 1.2rem;
+          font-weight: bold;
+          text-align: center;
+          margin-top: 0.5rem;
+        }
 
-            <div id="styleInfo"></div>
+                    #styleInfo {
+                      margin-top: 0.5rem;
+                      font-size: 1rem;
+                      line-height: 1.3;
+                    }
+                      #buttonContainer {
+          display: flex;
+          justify-content: center;
+          gap: 1rem;
+          flex-wrap: wrap;
+          margin-bottom: 1rem;
+        }
+        .copyButton {
+          padding: 0.5rem 1rem;
+          font-size: 1rem;
+          background-color: #4CAF50;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+          transition: all 0.3s ease;
+        }
+        #clearButton {
+          background-color: #f44336;
+        }
+        .copyButton:hover {
+          opacity: 0.9;
+        }
+        .copyButton:active {
+          box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+          transform: translateY(2px);
+        }
+          .footer {
+          font-size: 0.9rem;
+          text-align: center;
+          padding: 0.5rem;
+          background-color: #f0f0f0;
+          border-top: 1px solid #ccc;
+        }
+
+        .footer a {
+          color: #0366d6;
+          text-decoration: none;
+        }
+
+        .footer a:hover {
+          text-decoration: underline;
+        }
+                  </style>
+                </head>
+                <body>
+                  <div id="instructions">
+                    <b>Instrucciones:</b><br>
+                    1. Escribe o pega (Ctrl+Shift+V sin formato)<br>
+                    2. Usa Windows + H para dictar con la voz<br>
+                      2.1 Para puntuación y símbolos, di: "coma", "punto", "signo de interrogación", etc.<br>
+                      2.2 Comandos útiles: "nuevo párrafo", "borra eso", "detén el dictado"<br>
+                    3. Ctrl+S para guardar<br>
+                    4. Cerrar o F5 borra todo<br>
+                    5. Atajos útiles: Ctrl+Z: Deshacer | Ctrl+Y o Ctrl+Shift+Z: Rehacer | Ctrl+X: Cortar | Ctrl+C: Copiar | Ctrl+V: Pegar | Ctrl+A: Seleccionar todo
+                  </div>
+                  <div id="notepad" contenteditable></div>
+                  <div id="fixedPanel">
+                    <div id="buttonContainer">
+                      <button id="copyPlainButton" class="copyButton">Copiar texto plano</button>
+                      <button id="copyRichButton" class="copyButton">Copiar texto enriquecido</button>
+                      <button id="convertMarkdownButton" class="copyButton">Convertir Markdown y Copiar</button>
+                      <button id="undoButton" class="copyButton">Deshacer</button>
+                      <button id="clearButton" class="copyButton">Limpiar texto</button>
+                      
+                    </div>
+                    <div id="statsContainer">
+          <div class="statItem">
+            <div>Palabras</div>
+            <div id="wordCount" class="statValue">0</div>
           </div>
-        </body>
-      </html>
-    `;
+          <div class="statItem">
+            <div>Caracteres</div>
+            <div id="charCount" class="statValue">0</div>
+          </div>
+          <div class="statItem">
+            <div>Frases</div>
+            <div id="sentenceCount" class="statValue">0</div>
+          </div>
+          <div class="statItem">
+            <div>Palabras/Frase</div>
+            <div id="avgWordsPerSentence" class="statValue">0</div>
+          </div>
+          <div class="statItem">
+            <div>Párrafos</div>
+            <div id="paragraphCount" class="statValue">0</div>
+          </div>
+          <div class="statItem">
+            <div>Tokens</div>
+            <div id="tokenCount" class="statValue">0</div>
+          </div>
+          <div class="statItem">
+            <div>Tiempo de lectura</div>
+            <div id="readTime" class="statValue">0 min 0 seg</div>
+          </div>
+        </div>
+        <div id="interpretation">Resumen: Analizando texto...</div>
+
+                    <div id="styleInfo"></div>
+                  </div>
+                  <div id="footer" class="footer">
+  <div>Creado por <a href="https://bsky.app/profile/ernestob.bsky.social" target="_blank" rel="noopener noreferrer">@ernestob</a></div>
+  <div>Version: <span id="version">1.0.0</span></div>
+  <div><a href="https://github.com/ernestobarrera/Bookmarklet-Notas" target="_blank" rel="noopener noreferrer">Ver en GitHub</a></div>
+</div>
+                </body>
+              </html>
+            `;
     return doc;
   };
 
@@ -244,6 +265,14 @@ javascript: /*!
     }
 
     return interpretation;
+  };
+  /* Función para preservar el historial de deshacer */
+  const preserveUndoHistory = function (notepad, action) {
+    const originalContent = notepad.innerHTML;
+    action();
+    if (originalContent !== notepad.innerHTML) {
+      this.document.execCommand('insertHTML', false, notepad.innerHTML);
+    }
   };
   /* Función para actualizar las estadísticas */
   const updateStats = function () {
@@ -358,7 +387,7 @@ javascript: /*!
   /* Función para copiar texto plano */
   const copyPlainText = function () {
     const notepad = this.document.getElementById('notepad');
-    preserveSelection(notepad, () => {
+    preserveUndoHistory.call(this, notepad, () => {
       const text = notepad.innerText || notepad.textContent;
       this.navigator.clipboard.writeText(text);
     });
@@ -367,7 +396,7 @@ javascript: /*!
   /* Función para copiar texto enriquecido */
   const copyRichText = function () {
     const notepad = this.document.getElementById('notepad');
-    preserveSelection(notepad, () => {
+    preserveUndoHistory.call(this, notepad, () => {
       const range = this.document.createRange();
       range.selectNodeContents(notepad);
       const selection = this.window.getSelection();
@@ -381,7 +410,9 @@ javascript: /*!
   /* Función para limpiar el texto */
   const clearText = function () {
     const notepad = this.document.getElementById('notepad');
-    notepad.innerHTML = '';
+    preserveUndoHistory.call(this, notepad, () => {
+      notepad.innerHTML = '';
+    });
     updateStats.call(this);
     notepad.focus();
   };
@@ -434,11 +465,9 @@ javascript: /*!
 
     html = html.replace(/<\/ul><ul>|<\/ol><ol>/gim, '').trim();
 
-/*     Guardar el estado actual en el historial de deshacer
- */    this.document.execCommand('insertHTML', false, originalContent);
-
-    /*    Aplicar la conversión de Markdown */
-    notepad.innerHTML = html;
+    preserveUndoHistory.call(this, notepad, () => {
+      notepad.innerHTML = html;
+    });
 
     copyRichText.call(this);
     updateStats.call(this);
@@ -466,11 +495,12 @@ javascript: /*!
       }.bind(this));
       notepad.addEventListener('mouseup', updateStats.bind(this));
       this.document.addEventListener('keydown', function (e) {
+        saveNote.call(this, e);
+      }.bind(this));
+
+      notepad.addEventListener('keydown', function (e) {
         if (e.ctrlKey && e.key === 'z') {
-          e.preventDefault();
-          undo.call(this);
-        } else {
-          saveNote.call(this, e);
+          updateStats.call(this);
         }
       }.bind(this));
       this.document.getElementById('copyPlainButton').addEventListener('click', copyPlainText.bind(this));
