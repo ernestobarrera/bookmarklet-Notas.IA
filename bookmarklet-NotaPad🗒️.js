@@ -1,7 +1,8 @@
 javascript: /*!
 * Notes Editor Bookmarklet v1.0.0
 * Last updated: 2024-12-04
-* Autor: Ernesto Barrera https://github.com/ernestobarrera/Bookmarklet-Notas
+* Autor: Ernesto Barrera 
+* Repositorio: https://github.com/ernestobarrera/Bookmarklet-Notas
 * License: MIT 
 */(function () {
   /* Función para obtener el contenido seleccionado */
