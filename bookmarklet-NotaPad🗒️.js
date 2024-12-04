@@ -200,15 +200,16 @@ javascript: (function () {
   };
   /* Nuevo para ampliar estadísticas */
   const countSentences = (text) => {
-    return text.split(/[.!?]+/).length - 1;
+    return text.split(/[.!?]+/).filter(sentence => sentence.trim().length > 0).length;
   };
 
   const calculateAverageWordsPerSentence = (wordCount, sentenceCount) => {
     return sentenceCount > 0 ? (wordCount / sentenceCount).toFixed(1) : 0;
   };
 
-  const countParagraphs = (text) => {
-    return text.split(/\n\n+/).length;
+  const countParagraphs = text => {
+    return text.split(/(?:\r?\n){2,}|<\/p>|<br\s*\/?>\s*<br\s*\/?>/g)
+      .filter(p => p.trim().length > 0).length;
   };
 
   const interpretMetrics = (metrics) => {
@@ -249,7 +250,11 @@ javascript: (function () {
     const sentenceCount = countSentences(text);
     const avgWordsPerSentence = calculateAverageWordsPerSentence(wordCount, sentenceCount);
     const paragraphCount = countParagraphs(text);
-    const tokens = Math.ceil(charCount / 4);
+    const tokenCount = text
+      .toLowerCase()
+      .replace(/[^\w\s']/g, '')
+      .split(/\s+/)
+      .filter(word => word.length > 1).length;
     const wordsPerMinute = 250;
     const readTimeSeconds = Math.round((wordCount / wordsPerMinute) * 60);
     const minutes = Math.floor(readTimeSeconds / 60);
@@ -261,7 +266,7 @@ javascript: (function () {
       sentenceCount,
       avgWordsPerSentence,
       paragraphCount,
-      tokens,
+      tokenCount,
       readTime: `${minutes} min ${seconds} seg`
     };
 
@@ -270,7 +275,7 @@ javascript: (function () {
     this.document.getElementById('sentenceCount').textContent = sentenceCount;
     this.document.getElementById('avgWordsPerSentence').textContent = avgWordsPerSentence;
     this.document.getElementById('paragraphCount').textContent = paragraphCount;
-    this.document.getElementById('tokenCount').textContent = tokens;
+    this.document.getElementById('tokenCount').textContent = tokenCount;
     this.document.getElementById('readTime').textContent = metrics.readTime;
 
     this.document.getElementById('interpretation').textContent = interpretMetrics(metrics);
@@ -330,27 +335,41 @@ javascript: (function () {
       this.document.body.removeChild(a);
     }
   };
+  /* Función para preservar selección */
+  const preserveSelection = (notepad, action) => {
+    const selection = window.getSelection();
+    const range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+
+    action();
+
+    if (range) {
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+    notepad.focus();
+  };
 
   /* Función para copiar texto plano */
   const copyPlainText = function () {
     const notepad = this.document.getElementById('notepad');
-    const text = notepad.innerText || notepad.textContent;
-    this.navigator.clipboard.writeText(text).then(() => {
-      notepad.focus();
+    preserveSelection(notepad, () => {
+      const text = notepad.innerText || notepad.textContent;
+      this.navigator.clipboard.writeText(text);
     });
   };
 
   /* Función para copiar texto enriquecido */
   const copyRichText = function () {
     const notepad = this.document.getElementById('notepad');
-    const range = this.document.createRange();
-    range.selectNodeContents(notepad);
-    const selection = this.window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-    this.document.execCommand('copy');
-    selection.removeAllRanges();
-    notepad.focus();
+    preserveSelection(notepad, () => {
+      const range = this.document.createRange();
+      range.selectNodeContents(notepad);
+      const selection = this.window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+      this.document.execCommand('copy');
+      selection.removeAllRanges();
+    });
   };
 
   /* Función para limpiar el texto */
