@@ -205,16 +205,16 @@ javascript: /*!
             }
             #notepad {
               background-color: white;
-              min-height: 300px;
+              min-height: 200px;
               padding: 1rem;
               border: 1px solid #ccc;
               border-radius: 5px;
               width: 95%;
               margin: 0 auto 1rem;
-              font-size: 1.7rem;
+              font-size: 1.4rem;
               resize: vertical;
               overflow: auto;
-              margin-bottom: 220px;
+              margin-bottom: 150px;
             }
             #notepad a {
               color: #0066cc;
@@ -227,9 +227,9 @@ javascript: /*!
               left: 0;
               right: 0;
               background-color: #f0f0f0;
-              padding: 1rem;
+              padding: 0.7rem;
               box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-              max-height: 40vh;
+              max-height: 30vh;
               overflow-y: auto;
             }
         #statsContainer {
@@ -247,16 +247,17 @@ javascript: /*!
           margin: 0.3rem;
           flex: 1 1 calc(14% - 0.6rem);
           min-width: 80px;
+           font-size: 0.8rem; 
         }
         .statValue {
-          font-size: 1.1rem;
+          font-size: 1 rem;
           font-weight: bold;
         }
           #interpretation {
-          font-size: 1.2rem;
+          font-size: 0.9rem;
           font-weight: bold;
           text-align: center;
-          margin-top: 0.5rem;
+          margin-top: 0.3rem;
         }
 
                     #styleInfo {
@@ -272,8 +273,8 @@ javascript: /*!
           margin-bottom: 1rem;
         }
         .copyButton {
-          padding: 0.5rem 1rem;
-          font-size: 1rem;
+          padding: 0.4rem 0.8rem;
+          font-size: 0.9rem;
           background-color: #4CAF50;
           color: white;
           border: none;
@@ -292,23 +293,25 @@ javascript: /*!
           box-shadow: 0 1px 2px rgba(0,0,0,0.2);
           transform: translateY(2px);
         }
-          .footer {
-          font-size: 0.9rem;
-          text-align: center;
-          padding: 0.5rem;
-          background-color: #f0f0f0;
-          border-top: 1px solid #ccc;
+        .footer {
+            font-size: 0.8rem;
+            text-align: center;
+            padding: 0.3rem;
+            color: #666;
+            border-top: 1px solid #ddd;
+              margin-bottom: 0;
         }
 
-        .footer a {
-          color: #0366d6;
-          text-decoration: none;
-        }
+.footer a {
+    color: #0366d6;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
 
-        .footer a:hover {
-          text-decoration: underline;
-        }
-                  </style>
+.footer a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}       </style>
                 </head>
                 <body>
                   <div id="instructions">
@@ -360,23 +363,15 @@ javascript: /*!
             <div>Tiempo de lectura</div>
             <div id="readTime" class="statValue">0 min 0 seg</div>
           </div>
-          <div class="statItem">
-  <div>Idioma</div>
-  <div id="detectedLanguage" class="statValue">-</div>
-</div>
-<div class="statItem">
-  <div>Legibilidad</div>
-  <div id="readabilityScore" class="statValue">-</div>
-</div>
-        </div>
+      
         <div id="interpretation">Resumen: Analizando texto...</div>
 
                     <div id="styleInfo"></div>
                   </div>
-                  <div id="footer" class="footer">
-  <div>Creado por <a href="https://bsky.app/profile/ernestob.bsky.social" target="_blank" rel="noopener noreferrer">@ernestob</a></div>
-  <div>Version: <span id="version">1.0.0</span></div>
-  <div><a href="https://github.com/ernestobarrera/Bookmarklet-Notas" target="_blank" rel="noopener noreferrer">Ver en GitHub</a></div>
+
+
+    <div id="footer" class="footer">
+  <span>Creado por <a href="https://bsky.app/profile/ernestob.bsky.social" target="_blank" rel="noopener noreferrer">@ernestob</a> | Version: <span id="version">1.0.0</span> | <a href="https://github.com/ernestobarrera/Bookmarklet-Notas" target="_blank" rel="noopener noreferrer">Ver en GitHub</a></span>
 </div>
                 </body>
               </html>
@@ -392,11 +387,15 @@ javascript: /*!
   };
   /* Nuevo para ampliar estadísticas */
   const countSentences = (text) => {
-    return text.split(/[.!?]+/).filter(sentence => sentence.trim().length > 0).length;
+    /* Mejoramos la detección de final de frase incluyendo los signos en español */
+    return text.split(/[.!?¡¿]+/)
+      .filter(sentence => sentence.trim().length > 0)
+      .length;
   };
 
   const calculateAverageWordsPerSentence = (wordCount, sentenceCount) => {
-    return sentenceCount > 0 ? (wordCount / sentenceCount).toFixed(1) : 0;
+    if (wordCount === 0 || sentenceCount === 0) return "0";
+    return (wordCount / sentenceCount).toFixed(1);
   };
 
   const countParagraphs = text => {
@@ -405,6 +404,10 @@ javascript: /*!
   };
 
   const interpretMetrics = (metrics) => {
+    if (metrics.wordCount === 0) {
+      return "Analizando texto...";
+    }
+
     let interpretation = "Resumen: ";
 
     if (metrics.wordCount < 100) {
@@ -431,6 +434,7 @@ javascript: /*!
 
     return interpretation;
   };
+
   /* Función para preservar el historial de deshacer */
   const preserveUndoHistory = function (notepad, action) {
     const originalContent = notepad.innerHTML;
@@ -483,38 +487,37 @@ javascript: /*!
     this.document.getElementById('tokenCount').textContent = tokenCount;
     this.document.getElementById('readTime').textContent = `${minutes} min ${seconds} seg`;
 
-    /* Actualizar nuevos elementos */
-    this.document.getElementById('detectedLanguage').textContent =
-      readabilityResults.language === 'es' ? 'Español' : 'English';
-    this.document.getElementById('readabilityScore').textContent =
-      readabilityResults.readabilityScore;
+
 
     /* Actualizar interpretación */
-    this.document.getElementById('interpretation').textContent =
-      `${interpretMetrics({
-        wordCount,
-        charCount,
-        sentenceCount,
-        avgWordsPerSentence,
-        paragraphCount,
-        tokenCount
-      })} ${readabilityResults.interpretation}`;
-
-    analyzeStyles.call(this);
+    if (text.trim() === '') {
+      this.document.getElementById('interpretation').textContent = "Resumen: Analizando texto...";
+    } else {
+      this.document.getElementById('interpretation').textContent =
+        `${interpretMetrics({
+          wordCount,
+          charCount,
+          sentenceCount,
+          avgWordsPerSentence,
+          paragraphCount,
+          tokenCount
+        })} Legibilidad: ${readabilityResults.interpretation} (Puntuación: ${readabilityResults.readabilityScore})`;
+    }
   };
-
   /* Función para analizar estilos */
   const analyzeStyles = function () {
-    const notepad = this.document.getElementById('notepad');
+/*   1. Obtener elementos y configuración inicial
+ */  const notepad = this.document.getElementById('notepad');
     const styleInfo = this.document.getElementById('styleInfo');
     const selection = this.window.getSelection();
     const styles = new Set();
 
+    /*    2. Si no hay texto, limpiar y salir */
     if (notepad.innerText.trim() === '') {
       styleInfo.innerHTML = '';
       return;
     }
-
+    /* 3. Función para analizar los estilos de un nodo */
     const analyzeNode = (node) => {
       const style = this.window.getComputedStyle(node);
       styles.add(`Fuente: ${style.fontFamily.split(',')[0].trim()}`);
@@ -525,6 +528,7 @@ javascript: /*!
       if (style.textDecoration !== 'none') styles.add(`Decoración: ${style.textDecoration}`);
     };
 
+    /* 4. Analizar según si hay selección o no */
     if (selection && !selection.isCollapsed) {
       const range = selection.getRangeAt(0);
       const container = range.commonAncestorContainer;
@@ -682,7 +686,10 @@ javascript: /*!
         updateStats.call(this);
         analyzeStyles.call(this);
       }.bind(this));
-      notepad.addEventListener('mouseup', updateStats.bind(this));
+      notepad.addEventListener('mouseup', function () {
+        updateStats.call(this);
+        analyzeStyles.call(this);
+      }.bind(this));
       this.document.addEventListener('keydown', function (e) {
         saveNote.call(this, e);
       }.bind(this));

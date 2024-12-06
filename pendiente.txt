@@ -8,5 +8,4 @@
 - Se añaden espacios en blanco 
  - Palabras empieza con 1
 -Los enlaces no funcionan en la caja, aunque aparecen como texto enriquecido
-
-  
+orregir valores nulos o vacios en legibilidad y resumen
