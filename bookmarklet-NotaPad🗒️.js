@@ -162,6 +162,14 @@ javascript: /*!
       };
     }
   };
+  /* Función para controlar la frecuencia de actualizaciones */
+  const createDebouncer = function (originalFunction, waitTime) {
+    let timer;
+    return function (...args) {
+      clearTimeout(timer);
+      timer = setTimeout(() => originalFunction.apply(this, args), waitTime);
+    };
+  };
   /* Función para obtener el contenido seleccionado */
   const getSelectedContent = () => {
     const selection = window.getSelection();
@@ -187,7 +195,8 @@ javascript: /*!
           <style>
           
             body {
-              font: 1.8rem/1.5 monospace;
+              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+              font-size: 1.3rem;
               margin: 0;
               padding: 1rem;
               background-color: #f0f0f0;
@@ -206,15 +215,15 @@ javascript: /*!
             #notepad {
               background-color: white;
               min-height: 200px;
-              padding: 1rem;
+              padding: 0.5rem;
               border: 1px solid #ccc;
               border-radius: 5px;
               width: 95%;
-              margin: 0 auto 1rem;
-              font-size: 1.4rem;
+              margin: 0 auto 0.5rem;
+              font-size: 1.2rem;
               resize: vertical;
               overflow: auto;
-              margin-bottom: 150px;
+              margin-bottom: 120px;
             }
             #notepad a {
               color: #0066cc;
@@ -254,8 +263,8 @@ javascript: /*!
           font-weight: bold;
         }
           #interpretation {
-          font-size: 0.9rem;
-          font-weight: bold;
+          font-size: 1rem;
+          font-weight: normal;
           text-align: center;
           margin-top: 0.3rem;
         }
@@ -408,7 +417,7 @@ javascript: /*!
       return "Analizando texto...";
     }
 
-    let interpretation = "Resumen: ";
+    let interpretation = "";
 
     if (metrics.wordCount < 100) {
       interpretation += "Texto corto. ";
@@ -491,10 +500,10 @@ javascript: /*!
 
     /* Actualizar interpretación */
     if (text.trim() === '') {
-      this.document.getElementById('interpretation').textContent = "Resumen: Analizando texto...";
+      this.document.getElementById('interpretation').innerHTML = "<b>Resumen:</b> Analizando texto...";
     } else {
-      this.document.getElementById('interpretation').textContent =
-        `${interpretMetrics({
+      this.document.getElementById('interpretation').innerHTML =
+        `<b>Resumen:</b> ${interpretMetrics({
           wordCount,
           charCount,
           sentenceCount,
@@ -682,14 +691,13 @@ javascript: /*!
       }
 
       notepad.focus();
-      notepad.addEventListener('input', function () {
+      const debouncedUpdate = createDebouncer(function () {
         updateStats.call(this);
         analyzeStyles.call(this);
-      }.bind(this));
-      notepad.addEventListener('mouseup', function () {
-        updateStats.call(this);
-        analyzeStyles.call(this);
-      }.bind(this));
+      }, 300).bind(this);
+
+      notepad.addEventListener('input', debouncedUpdate);
+      notepad.addEventListener('mouseup', debouncedUpdate);
       this.document.addEventListener('keydown', function (e) {
         saveNote.call(this, e);
       }.bind(this));
