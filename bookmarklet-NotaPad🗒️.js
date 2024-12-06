@@ -162,6 +162,14 @@ javascript: /*!
       };
     }
   };
+  /* Función para controlar la frecuencia de actualizaciones */
+  const createDebouncer = function (originalFunction, waitTime) {
+    let timer;
+    return function (...args) {
+      clearTimeout(timer);
+      timer = setTimeout(() => originalFunction.apply(this, args), waitTime);
+    };
+  };
   /* Función para obtener el contenido seleccionado */
   const getSelectedContent = () => {
     const selection = window.getSelection();
@@ -682,14 +690,13 @@ javascript: /*!
       }
 
       notepad.focus();
-      notepad.addEventListener('input', function () {
+      const debouncedUpdate = createDebouncer(function () {
         updateStats.call(this);
         analyzeStyles.call(this);
-      }.bind(this));
-      notepad.addEventListener('mouseup', function () {
-        updateStats.call(this);
-        analyzeStyles.call(this);
-      }.bind(this));
+      }, 300).bind(this);
+
+      notepad.addEventListener('input', debouncedUpdate);
+      notepad.addEventListener('mouseup', debouncedUpdate);
       this.document.addEventListener('keydown', function (e) {
         saveNote.call(this, e);
       }.bind(this));
