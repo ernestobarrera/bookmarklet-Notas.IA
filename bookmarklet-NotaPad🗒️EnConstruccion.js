@@ -204,14 +204,15 @@ javascript: /*!
               padding-bottom: 300px;
               box-sizing: border-box;
             }
-            #instructions {
-              background-color: #e0e0e0;
-              padding: 0.7rem;
-              margin-bottom: 0.7rem;
-              border-radius: 5px;
-              font-size: 1rem;
-              line-height: 1.3;
-            }
+       
+
+#instructions.hidden {
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
             #notepad {
               background-color: white;
               min-height: 200px;
@@ -223,34 +224,68 @@ javascript: /*!
               font-size: 1.2rem;
               resize: vertical;
               overflow: auto;
-              margin-bottom: 120px;
+               margin-top: 1rem;
+  margin-bottom: 40px !important;
+  position: relative;
+  z-index: 1;
             }
             #notepad a {
               color: #0066cc;
               text-decoration: underline;
               cursor: pointer;
             }
-            #fixedPanel {
-              position: fixed;
-              bottom: 0;
-              left: 0;
-              right: 0;
-              background-color: #f0f0f0;
-              padding: 0.7rem;
-              box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-              max-height: 30vh;
-              overflow-y: auto;
-            }
-        #statsContainer {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: space-between;
-          background-color: #e0e0e0;
-          padding: 0.7rem;
-          border-radius: 5px;
-          font-size: 0.9rem;
-          margin-bottom: 1rem;
-        }
+        
+#fixedPanel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(240, 240, 240, 0.97);
+  padding: 0.7rem;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  transform: translateY(calc(100% - 30px));
+  transition: transform 0.3s ease;
+  max-height: 30vh;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+#fixedPanel::before {
+  content: "▲ Estadísticas";
+  display: block;
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: #666;
+  cursor: pointer;
+}
+
+#fixedPanel:hover {
+  transform: translateY(0);
+}
+
+#fixedPanel:hover::before {
+  content: "▼ Ocultar";
+}
+  #statsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  background-color: #e0e0e0;
+  padding: 0.7rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  margin-top: 20px;
+  margin-bottom: 1rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#fixedPanel:hover #statsContainer {
+  opacity: 1;
+}
         .statItem {
           text-align: center;
           margin: 0.3rem;
@@ -275,12 +310,18 @@ javascript: /*!
                       line-height: 1.3;
                     }
                       #buttonContainer {
-          display: flex;
-          justify-content: center;
-          gap: 1rem;
-          flex-wrap: wrap;
-          margin-bottom: 1rem;
-        }
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 15px;
+  margin-bottom: 1rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+  #fixedPanel:hover #buttonContainer {
+  opacity: 1;
+}
         .copyButton {
           padding: 0.4rem 0.8rem;
           font-size: 0.9rem;
@@ -321,14 +362,30 @@ javascript: /*!
     color: #0056b3;
     text-decoration: underline;
 }       
-
-
 #instructions {
-  transition: max-height 0.3s ease-out, opacity 0.3s ease-out, margin 0.3s ease-out;
-  max-height: 500px;
+  background-color: #e0e0e0;
+  padding: 0.7rem;
+  margin-bottom: 1.5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  line-height: 1.3;
+  position: relative;
+  z-index: 100;
+  transition: all 0.3s ease-out;
+  max-height: 2000px;
+  overflow-y: auto;
   opacity: 1;
+}
+
+#instructions.hidden {
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
 }
+
+
 
 #instructions.hidden {
   max-height: 0;
@@ -348,6 +405,7 @@ javascript: /*!
   border-radius: 5px;
   cursor: pointer;
   z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 #fixedPanel {
@@ -393,16 +451,61 @@ javascript: /*!
                 <body>
                 <button id="toggleInstructions">Mostrar/Ocultar Instrucciones</button>
 
-                  <div id="instructions">
-                    <b>Instrucciones:</b><br>
-                    1. Escribe o pega (Ctrl+Shift+V sin formato)<br>
-                    2. Usa Windows + H para dictar con la voz<br>
-                      2.1 Para puntuación y símbolos, di: "coma", "punto", "signo de interrogación", etc.<br>
-                      2.2 Comandos útiles: "nuevo párrafo", "borra eso", "detén el dictado"<br>
-                    3. Ctrl+S para guardar<br>
-                    4. Cerrar o F5 borra todo<br>
-                    5. Atajos útiles: Ctrl+Z: Deshacer | Ctrl+Y o Ctrl+Shift+Z: Rehacer | Ctrl+X: Cortar | Ctrl+C: Copiar | Ctrl+V: Pegar | Ctrl+A: Seleccionar todo
-                  </div>
+                 <div id="instructions" class="hidden">
+  <h3 style="margin-bottom: 1rem;">📝 Bienvenido al Editor de Notas Inteligente</h3>
+  
+  <div style="margin-bottom: 1rem;">
+    <b>🎯 Características principales:</b><br>
+    • Editor inteligente con análisis de legibilidad en español e inglés<br>
+    • Estadísticas en tiempo real (palabras, tiempo de lectura, etc.)<br>
+    • Soporte para Markdown y texto enriquecido<br>
+    • Panel de estadísticas minimizable (se oculta al hacer scroll)<br>
+    • Guardado automático en el navegador
+  </div>
+
+  <div style="margin-bottom: 1rem;">
+    <b>✍️ Formas de introducir texto:</b><br>
+    • Escribir directamente en el editor<br>
+    • Pegar texto: Ctrl+V (conserva formato) o Ctrl+Shift+V (solo texto)<br>
+    • Dictado por voz: Windows + H (solo Windows 10/11)<br>
+    &nbsp;&nbsp;- Comandos de voz: "punto", "coma", "nuevo párrafo"<br>
+    &nbsp;&nbsp;- Control: "borra eso", "detén el dictado"
+  </div>
+
+  <div style="margin-bottom: 1rem;">
+    <b>🔄 Opciones de conversión:</b><br>
+    • "Copiar texto plano": Extrae solo el texto sin formato<br>
+    • "Copiar texto enriquecido": Mantiene el formato para pegar en Word/Email<br>
+    • "Convertir Markdown": Transforma la sintaxis Markdown en texto formateado<br>
+    &nbsp;&nbsp;- Soporta: **negrita**, *cursiva*, # títulos, listas, enlaces, etc.
+  </div>
+
+  <div style="margin-bottom: 1rem;">
+    <b>📊 Panel de estadísticas:</b><br>
+    • Palabras y caracteres totales<br>
+    • Tiempo estimado de lectura<br>
+    • Análisis de legibilidad (español/inglés)<br>
+    • Detección de idioma automática<br>
+    • Se minimiza al hacer scroll (hover para mostrar)
+  </div>
+
+  <div style="margin-bottom: 1rem;">
+    <b>⌨️ Atajos de teclado:</b><br>
+    • Ctrl + S: Guardar como HTML<br>
+    • Ctrl + Z: Deshacer<br>
+    • Ctrl + Y (o Ctrl+Shift+Z): Rehacer<br>
+    • Ctrl + X/C/V: Cortar/Copiar/Pegar<br>
+    • Ctrl + A: Seleccionar todo
+  </div>
+
+  <div>
+    <b>💡 Consejos:</b><br>
+    • Usa el botón "Mostrar/Ocultar" para maximizar el espacio de escritura<br>
+    • El panel inferior se minimiza automáticamente al hacer scroll<br>
+    • Guarda frecuentemente tu trabajo con Ctrl+S<br>
+    • Revisa el análisis de legibilidad para mejorar tu texto
+  </div>
+</div>
                   <div id="notepad" contenteditable></div>
                   <div id="fixedPanel">
                     <div id="buttonContainer">
