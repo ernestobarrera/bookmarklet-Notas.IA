@@ -1,117 +1,208 @@
-# Bookmarklet de Bloc de Notas con Funciones de Copiar y Dictado de Voz
+# Notas.IA🗒️
 
-Este repositorio contiene el bookmarklet NotaPad🗒️. Al pulsarlo abre una nueva pestaña con un bloc de notas simple. Incluye botones para copiar el contenido como texto plano o texto enriquecido (HTML), permite guardar el contenido mediante `Ctrl + S` y soporta dictado de voz usando la tecla **Windows + H**.
+[![Licencia MIT](https://img.shields.io/badge/Licencia-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow.svg)](https://www.javascript.com/)
+[![Mantenimiento](https://img.shields.io/badge/Mantenido%3F-s%C3%AD-green.svg)](https://github.com/ernestobarrera/Bookmarklet-Notas/graphs/commit-activity)
 
-## Características
+Notas.IA🗒️ es un editor de notas avanzado que se ejecuta directamente en el navegador, diseñado específicamente para trabajar con modelos de lenguaje (LLMs) y procesar texto de manera eficiente. Este bookmarklet transforma cualquier navegador en una potente herramienta de edición y análisis de texto, perfecta para iterar y refinar las respuestas de LLMs.
 
-- **Bloc de notas editable**: Un área donde puedes escribir o pegar texto.
-- **Dictado de voz**: Usa **Windows + H** para activar el dictado de voz en Windows.
-- **Copiar texto plano**: Botón que copia el contenido sin formato al portapapeles.
-- **Copiar texto enriquecido**: Botón que copia el contenido con formato HTML al portapapeles.
-- **Guardar contenido**: Presiona `Ctrl + S` para guardar el contenido como un archivo HTML.
+## ⚡ ¿Por qué este Editor?
 
-## Instalación
+### Integración con LLMs
 
-1. **Crear el Bookmarklet**:
+- **Procesamiento Instantáneo**: Ideal para editar, refinar y analizar respuestas de ChatGPT, Claude y otros LLMs
+- **Análisis de Legibilidad**: Evalúa la calidad y complejidad de las respuestas generadas
+- **Edición Contextual**: Mantén el contexto mientras editas y refinas el texto generado
+- **Formato Universal**: Convierte fácilmente entre texto plano, rich text y Markdown
+- **Persistencia**: Guarda y recupera conversaciones importantes sin depender de la interfaz del LLM
 
-   - Copia todo el código del archivo `bookmarklet.js`.
+### Ventajas para el Trabajo con LLMs
 
-   - Crea un nuevo marcador en tu navegador:
+- Edita respuestas largas fuera del chat sin perder el formato
+- Analiza la complejidad del texto generado en tiempo real
+- Combina múltiples respuestas en un solo documento
+- Prepara prompts elaborados con formato consistente
+- Mantén un registro de las iteraciones más exitosas
 
-     - En **Chrome** y **Firefox**:
+## 🌟 Características Principales
 
-       1. Haz clic derecho en la barra de marcadores y selecciona "Añadir página" o "Agregar marcador".
-       2. En el campo "Nombre", ingresa un nombre descriptivo, por ejemplo, "Bloc de Notas".
-       3. En el campo "URL", pega el código del bookmarklet que copiaste.
+### Funcionalidad Core
 
-   - **Nota**: Asegúrate de que el código del bookmarklet comience con `javascript:`.
+- Editor inteligente con análisis de legibilidad bilingüe (Español/Inglés)
+- Estadísticas de texto en tiempo real
+- Soporte para dictado por voz (Windows 10/11)
+- Renderizado y conversión de Markdown
+- Opciones de exportación en texto enriquecido y plano
+- Detección automática de idioma
+- Autoguardado en el navegador
 
-2. **Permisos del Navegador**:
+### Análisis Inteligente
 
-   - Algunos navegadores pueden requerir que permitas el acceso al portapapeles. Si es necesario, ajusta la configuración de seguridad de tu navegador para permitirlo.
+- Cálculo del índice de legibilidad Flesch
+- Soporte multilingüe con detección automática
+- Reconocimiento de terminología técnica
+- Análisis de complejidad de oraciones
+- Conteo en tiempo real de palabras y caracteres
+- Cálculo de tiempo estimado de lectura
 
-## Uso
+### Gestión de Documentos
 
-1. **Abrir el Bloc de Notas**:
+- Guardado en HTML con formato preservado
+- Copia como texto plano o enriquecido
+- Conversión de Markdown a HTML
+- Soporte para Deshacer/Rehacer
+- Panel de estadísticas autocontraíble
 
-   - Haz clic en el bookmarklet que creaste. Se abrirá una nueva pestaña con el bloc de notas.
+## 🚀 Instalación
 
-2. **Escribir o Pegar Texto**:
+### Crear el Bookmarklet
 
-   - Escribe directamente en el área de notas o pega texto usando `Ctrl + Shift + V` para pegar sin formato.
+1. Copia el contenido completo de `bookmarklet.js`
+2. Crea un nuevo marcador en tu navegador:
+   ```
+   Clic derecho en la barra de marcadores → Añadir página/Nuevo marcador
+   Nombre: Editor de Notas Inteligente (o el nombre que prefieras)
+   URL: [Pega el código del bookmarklet]
+   ```
 
-3. **Usar Dictado de Voz (Windows 10 y posteriores)**:
+### Compatibilidad con Navegadores
 
-   - **Activar Dictado**:
+Probado y verificado en:
 
-     - Coloca el cursor en el área de notas.
-     - Presiona **Windows + H** para abrir la barra de dictado de voz de Windows.
+- Google Chrome (v100+)
+- Mozilla Firefox (v90+)
+- Microsoft Edge (v90+)
+- Safari (v15+)
 
-   - **Comenzar a Hablar**:
+## 💡 Guía de Uso
 
-     - Una vez que aparezca la barra de dictado, comienza a hablar claramente.
-     - El texto dictado aparecerá en el bloc de notas en tiempo real.
+### Métodos de Entrada de Texto
 
-   - **Comandos Útiles**:
+1. **Entrada Directa**
 
-     - **Puntuación**: Di "coma", "punto", "signo de interrogación", "dos puntos", etc., para insertar puntuación.
-     - **Nuevo Párrafo**: Di "nuevo párrafo" para comenzar en una nueva línea.
-     - **Corrección**: Si cometes un error, puedes decir "borrar eso" para eliminar la última entrada.
+   - Escribe directamente en el editor
+   - Pega texto: `Ctrl+V` (con formato) o `Ctrl+Shift+V` (texto plano)
 
-   - **Desactivar Dictado**:
+2. **Dictado por Voz** (Windows 10/11)
 
-     - Presiona nuevamente **Windows + H** o haz clic en el icono del micrófono para detener el dictado.
+   - Activar: `Windows + H`
+   - Comandos de voz:
+     - Puntuación: "punto", "coma", "nuevo párrafo"
+     - Control: "borra eso", "detén el dictado"
 
-   - **Consejos**:
+3. **Formato de Texto**
+   - Soporta sintaxis Markdown:
+     ```markdown
+     **negrita**, _cursiva_, # títulos
 
-     - Asegúrate de tener una conexión a internet, ya que el dictado de voz utiliza servicios en la nube.
-     - Habla claramente y a un ritmo moderado para mejorar la precisión del reconocimiento.
+     - viñetas
+       [enlaces](url)
+     ```
+   - Preserva el formato enriquecido al pegar
 
-4. **Copiar al Portapapeles**:
+### Características Avanzadas
 
-   - **Copiar Texto Plano**: Haz clic en el botón "Copiar texto plano" para copiar el contenido sin formato al portapapeles.
-   - **Copiar Texto Enriquecido**: Haz clic en el botón "Copiar texto enriquecido" para copiar el contenido con formato HTML al portapapeles.
+#### Análisis de Legibilidad
 
-5. **Guardar Notas**:
+El editor implementa métricas sofisticadas de legibilidad:
 
-   - Presiona `Ctrl + S` para guardar el contenido del bloc de notas como un archivo HTML.
+- Detección automática de idioma (Español/Inglés)
+- Cálculo del índice de legibilidad Flesch
+- Reconocimiento de terminología técnica
+- Análisis de complejidad de oraciones
+- Análisis de frecuencia de palabras y caracteres
 
-6. **Borrar Contenido**:
+#### Panel de Estadísticas
 
-   - Cierra la pestaña o presiona `F5` para borrar el contenido y empezar de nuevo.
+Proporciona métricas en tiempo real:
 
-## Personalización
+- Conteo de palabras y caracteres
+- Conteo de oraciones y longitud promedio
+- Conteo de párrafos
+- Tiempo estimado de lectura
+- Análisis de composición del lenguaje
+- Puntuaciones de legibilidad
 
-Puedes personalizar el estilo y la funcionalidad modificando el código del bookmarklet:
+### Atajos de Teclado
 
-- **Estilos CSS**: Modifica los estilos dentro de la etiqueta `<style>` para cambiar la apariencia del bloc de notas.
-- **Funciones JavaScript**: Ajusta las funciones dentro de la etiqueta `<script>` para modificar el comportamiento.
+| Acción            | Windows/Linux      | macOS           |
+| ----------------- | ------------------ | --------------- |
+| Guardar           | `Ctrl + S`         | `⌘ + S`         |
+| Deshacer          | `Ctrl + Z`         | `⌘ + Z`         |
+| Rehacer           | `Ctrl + Y`         | `⌘ + Shift + Z` |
+| Seleccionar Todo  | `Ctrl + A`         | `⌘ + A`         |
+| Copiar            | `Ctrl + C`         | `⌘ + C`         |
+| Pegar             | `Ctrl + V`         | `⌘ + V`         |
+| Pegar sin Formato | `Ctrl + Shift + V` | `⌘ + Shift + V` |
 
-## Compatibilidad
+## 🛠️ Implementación Técnica
 
-Este bookmarklet ha sido probado en navegadores modernos como:
+### Componentes Principales
 
-- Google Chrome
-- Mozilla Firefox
-- Microsoft Edge
+1. **Detector de Idioma**
 
-**Nota**:
+   - Identificación basada en patrones
+   - Reconocimiento de terminología técnica
+   - Capacidades de análisis híbrido
+   - Sistema de puntuación de confianza
 
-- La función de dictado de voz con **Windows + H** está disponible en Windows 10 y versiones posteriores.
-- Es posible que necesites habilitar el dictado de voz en la configuración de Windows antes de usarlo.
+2. **Analizador de Legibilidad**
 
-## Contribuciones
+   - Conteo de sílabas multilingüe
+   - Adaptación del índice Flesch
+   - Ajustes de fórmulas por idioma
+   - Sistema de interpretación de puntuaciones
 
-¡Las contribuciones son bienvenidas! Si deseas mejorar este proyecto:
+3. **Gestión de Documentos**
+   - API Blob de HTML5 para guardado
+   - Integración con ClipboardAPI
+   - Preservación de selección
+   - Gestión del historial de deshacer
 
-- Haz un _fork_ del repositorio.
-- Realiza tus modificaciones.
-- Envía un _pull request_ con una descripción detallada de los cambios.
+### Optimizaciones de Rendimiento
 
-## Licencia
+- Funciones de actualización con debounce
+- Manipulación eficiente del DOM
+- Implementación de scroll suave
+- Gestión eficiente de eventos
 
-Este proyecto está licenciado bajo la [Licencia MIT](LICENSE).
+## 🤝 Contribuciones
 
-## Autor
+¡Las contribuciones son bienvenidas! Aquí te explicamos cómo puedes ayudar:
 
-- [Ernesto Barrera](https://github.com/ernestobarrera)
+1. Haz fork del repositorio
+2. Crea tu rama de características:
+   ```bash
+   git checkout -b caracteristica/NuevaFuncionalidad
+   ```
+3. Confirma tus cambios:
+   ```bash
+   git commit -m 'Añadir alguna NuevaFuncionalidad'
+   ```
+4. Empuja a la rama:
+   ```bash
+   git push origin caracteristica/NuevaFuncionalidad
+   ```
+5. Abre un Pull Request
+
+### Pautas de Desarrollo
+
+- Sigue los estándares de JavaScript ES6+
+- Mantén la compatibilidad con navegadores
+- Añade documentación apropiada
+- Incluye pruebas unitarias para nuevas características
+
+## 📄 Licencia
+
+[Licencia MIT](LICENSE) - siéntete libre de usar este proyecto comercialmente
+
+## 👤 Autor
+
+**Ernesto Barrera**
+
+- GitHub: [@ernestobarrera](https://github.com/ernestobarrera)
+- Bluesky: [@ernestob.bsky.social](https://bsky.app/profile/ernestob.bsky.social)
+
+---
+
+_Última actualización: Diciembre 2024_
