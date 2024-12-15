@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "Si utilizas este software, por favor cítalo como se indica a continuación."
+authors:
+  - family-names: "Barrera"
+    given-names: "Ernesto"
+title: "Notas.IA🗒️"
+version: 1.0.0
+date-released: 2024-12-15
+url: "https://github.com/ernestobarrera/Bookmarklet-Notas"
+repository-code: "https://github.com/ernestobarrera/Bookmarklet-Notas"
+license: MIT
+doi: [[10.5281/zenodo.14497636]] # Reemplaza esto con tu DOI de Zenodo
+type: software
+keywords:
+  - bookmarklet
+  - text-analysis
+  - legibilidad
+  - IA
+  - LLM
+  - healthcare
+  - editor-de-texto
+  - español
+  - text-edition I
+abstract: |
+  Bookmarklet que transforma cualquier navegador en un editor inteligente para el análisis y refinamiento de textos, especialmente diseñado para trabajar con contenidos generados por IA. Incorpora análisis de legibilidad bilingüe (español/inglés), estadísticas en tiempo real, y soporte para múltiples formatos de texto.
