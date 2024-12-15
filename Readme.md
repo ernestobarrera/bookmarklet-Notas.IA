@@ -1,5 +1,7 @@
 # Notas.IA🗒️
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14497636.svg)](https://doi.org/10.5281/zenodo.14497636)
+
 [![Licencia MIT](https://img.shields.io/badge/Licencia-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow.svg)](https://www.javascript.com/)
 [![Mantenimiento](https://img.shields.io/badge/Mantenido%3F-s%C3%AD-green.svg)](https://github.com/ernestobarrera/Bookmarklet-Notas/graphs/commit-activity)
