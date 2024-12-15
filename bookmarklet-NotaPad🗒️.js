@@ -192,7 +192,7 @@ javascript: /*!
         <head>
           <meta charset="utf-8">
           <title>NOTAS</title>
-          <style>
+<style>
           
             body {
               font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -204,14 +204,15 @@ javascript: /*!
               padding-bottom: 300px;
               box-sizing: border-box;
             }
-            #instructions {
-              background-color: #e0e0e0;
-              padding: 0.7rem;
-              margin-bottom: 0.7rem;
-              border-radius: 5px;
-              font-size: 1rem;
-              line-height: 1.3;
-            }
+       
+
+#instructions.hidden {
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
             #notepad {
               background-color: white;
               min-height: 200px;
@@ -223,164 +224,351 @@ javascript: /*!
               font-size: 1.2rem;
               resize: vertical;
               overflow: auto;
-              margin-bottom: 120px;
+               margin-top: 1rem;
+  margin-bottom: 40px !important;
+  position: relative;
+  z-index: 1;
+   scroll-behavior: auto;
+  transition: margin-top 0.3s ease-out;
             }
             #notepad a {
               color: #0066cc;
               text-decoration: underline;
               cursor: pointer;
             }
-            #fixedPanel {
-              position: fixed;
-              bottom: 0;
-              left: 0;
-              right: 0;
-              background-color: #f0f0f0;
-              padding: 0.7rem;
-              box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-              max-height: 30vh;
-              overflow-y: auto;
-            }
-        #statsContainer {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: space-between;
-          background-color: #e0e0e0;
-          padding: 0.7rem;
-          border-radius: 5px;
-          font-size: 0.9rem;
-          margin-bottom: 1rem;
-        }
-        .statItem {
-          text-align: center;
-          margin: 0.3rem;
-          flex: 1 1 calc(14% - 0.6rem);
-          min-width: 80px;
-           font-size: 0.8rem; 
-        }
-        .statValue {
-          font-size: 1 rem;
-          font-weight: bold;
-        }
-          #interpretation {
-          font-size: 1rem;
-          font-weight: normal;
-          text-align: center;
-          margin-top: 0.3rem;
-        }
+        
+#fixedPanel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(250, 250, 250, 0.97);
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  border-top: 1px solid #e5e5e5;
+  z-index: 1000;
+  padding: 0.3rem;
+}
 
-                    #styleInfo {
-                      margin-top: 0.5rem;
-                      font-size: 1rem;
-                      line-height: 1.3;
-                    }
-                      #buttonContainer {
-          display: flex;
-          justify-content: center;
-          gap: 1rem;
-          flex-wrap: wrap;
-          margin-bottom: 1rem;
-        }
-        .copyButton {
-          padding: 0.4rem 0.8rem;
-          font-size: 0.9rem;
-          background-color: #4CAF50;
-          color: white;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-          transition: all 0.3s ease;
-        }
-        #clearButton {
-          background-color: #f44336;
-        }
-        .copyButton:hover {
-          opacity: 0.9;
-        }
-        .copyButton:active {
-          box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-          transform: translateY(2px);
-        }
-        .footer {
-            font-size: 0.8rem;
-            text-align: center;
-            padding: 0.3rem;
-            color: #666;
-            border-top: 1px solid #ddd;
-              margin-bottom: 0;
-        }
+#statsContainer {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+  margin: 0;
+  padding: 0;
+}
+
+#fixedPanel:hover #statsContainer {
+  max-height: 500px;
+  opacity: 1;
+  padding: 8px;
+  margin-bottom: 8px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.statItem {
+  flex: 1;
+  text-align: center;
+  background-color: white;
+  padding: 8px 4px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.statItem > div:first-child {
+  font-weight: bold;
+  color: #666;
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+}
+
+.statValue {
+  font-size: 1rem;
+  color: #2196F3;
+  font-weight: 500;
+}
+
+#interpretation {
+  width: 100%;
+  text-align: center;
+  padding: 8px;
+  background-color: white;
+  border-radius: 4px;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+#interpretation b {
+  color: #666;
+}
+#buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 4px 0;
+  margin-bottom: 4px;
+}
+
+.copyButton {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #4CAF50;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+#clearButton {
+  background-color: #f44336;
+}
+
+#undoButton {
+  background-color: #2196F3;
+}
+
+.copyButton:hover {
+  opacity: 0.9;
+}
+
+#notepad {
+  margin-bottom: 110px !important;
+  min-height: 300px;
+}
+
+.footer {
+  font-size: 0.75rem;
+  text-align: center;
+  color: #666;
+  padding: 4px 0;
+  margin: 0;
+}
 
 .footer a {
-    color: #0366d6;
-    text-decoration: none;
-    transition: color 0.2s ease;
+  color: #0366d6;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 .footer a:hover {
-    color: #0056b3;
-    text-decoration: underline;
-}       </style>
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Nuevo contenedor para las estadísticas en línea */
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}     
+#instructions {
+  background-color: #e0e0e0;
+  padding: 0.7rem;
+  margin-bottom: 1.5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  line-height: 1.3;
+  position: relative;
+  z-index: 100;
+  transition: all 0.3s ease-out;
+  max-height: 2000px;
+  overflow-y: auto;
+  opacity: 1;
+}
+
+#instructions.hidden {
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+
+
+#instructions.hidden {
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+  padding: 0;
+}
+
+#toggleInstructions {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: background-color 0.2s ease;
+
+}
+
+#fixedPanel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(240, 240, 240, 0.95);
+  padding: 0.7rem;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, max-height 0.3s ease;
+  max-height: 30vh;
+  overflow-y: auto;
+  transform: translateY(0);
+}
+
+#fixedPanel.minimized {
+  transform: translateY(calc(100% - 40px));
+}
+
+#fixedPanel:hover.minimized {
+  transform: translateY(0);
+}
+
+#notepad {
+  background-color: white;
+  min-height: 200px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 95%;
+  margin: 0 auto 0.5rem;
+  font-size: 1.2rem;
+  resize: vertical;
+  overflow: auto;
+  margin-bottom: 60px;
+   min-height: 300px;
+  line-height: 1.6;
+  text-align: justify;
+  hyphens: auto;
+  word-wrap: break-word;    
+</style>
                 </head>
                 <body>
-                  <div id="instructions">
-                    <b>Instrucciones:</b><br>
-                    1. Escribe o pega (Ctrl+Shift+V sin formato)<br>
-                    2. Usa Windows + H para dictar con la voz<br>
-                      2.1 Para puntuación y símbolos, di: "coma", "punto", "signo de interrogación", etc.<br>
-                      2.2 Comandos útiles: "nuevo párrafo", "borra eso", "detén el dictado"<br>
-                    3. Ctrl+S para guardar<br>
-                    4. Cerrar o F5 borra todo<br>
-                    5. Atajos útiles: Ctrl+Z: Deshacer | Ctrl+Y o Ctrl+Shift+Z: Rehacer | Ctrl+X: Cortar | Ctrl+C: Copiar | Ctrl+V: Pegar | Ctrl+A: Seleccionar todo
-                  </div>
+                <button id="toggleInstructions">Mostrar/Ocultar Instrucciones</button>
+
+                 <div id="instructions" class="hidden">
+  <h3 style="margin-bottom: 1rem;">📝 Bienvenido al Editor de Notas Inteligente</h3>
+  
+  <div style="margin-bottom: 1rem;">
+    <b>🎯 Características principales:</b><br>
+    • Editor inteligente con análisis de legibilidad en español e inglés<br>
+    • Estadísticas en tiempo real (palabras, tiempo de lectura, etc.)<br>
+    • Soporte para Markdown y texto enriquecido<br>
+    • Panel de estadísticas minimizable (se oculta al hacer scroll)<br>
+    • Guardado automático en el navegador
+  </div>
+
+  <div style="margin-bottom: 1rem;">
+    <b>✍️ Formas de introducir texto:</b><br>
+    • Escribir directamente en el editor<br>
+    • Pegar texto: Ctrl+V (conserva formato) o Ctrl+Shift+V (solo texto)<br>
+    • Dictado por voz: Windows + H (solo Windows 10/11)<br>
+    &nbsp;&nbsp;- Comandos de voz: "punto", "coma", "nuevo párrafo"<br>
+    &nbsp;&nbsp;- Control: "borra eso", "detén el dictado"
+  </div>
+
+  <div style="margin-bottom: 1rem;">
+    <b>🔄 Opciones de conversión:</b><br>
+    • "Copiar texto plano": Extrae solo el texto sin formato<br>
+    • "Copiar texto enriquecido": Mantiene el formato para pegar en Word/Email<br>
+    • "Convertir Markdown": Transforma la sintaxis Markdown en texto formateado<br>
+    &nbsp;&nbsp;- Soporta: **negrita**, *cursiva*, # títulos, listas, enlaces, etc.
+  </div>
+
+  <div style="margin-bottom: 1rem;">
+    <b>📊 Panel de estadísticas:</b><br>
+    • Palabras y caracteres totales<br>
+    • Tiempo estimado de lectura<br>
+    • Análisis de legibilidad (español/inglés)<br>
+    • Detección de idioma automática<br>
+    • Se minimiza al hacer scroll (hover para mostrar)
+  </div>
+
+  <div style="margin-bottom: 1rem;">
+    <b>⌨️ Atajos de teclado:</b><br>
+    • Ctrl + S: Guardar como HTML<br>
+    • Ctrl + Z: Deshacer<br>
+    • Ctrl + Y (o Ctrl+Shift+Z): Rehacer<br>
+    • Ctrl + X/C/V: Cortar/Copiar/Pegar<br>
+    • Ctrl + A: Seleccionar todo
+  </div>
+
+  <div>
+    <b>💡 Consejos:</b><br>
+    • Usa el botón "Mostrar/Ocultar" para maximizar el espacio de escritura<br>
+    • El panel inferior se minimiza automáticamente al hacer scroll<br>
+    • Guarda frecuentemente tu trabajo con Ctrl+S<br>
+    • Revisa el análisis de legibilidad para mejorar tu texto
+  </div>
+</div>
                   <div id="notepad" contenteditable></div>
-                  <div id="fixedPanel">
-                    <div id="buttonContainer">
-                      <button id="copyPlainButton" class="copyButton">Copiar texto plano</button>
-                      <button id="copyRichButton" class="copyButton">Copiar texto enriquecido</button>
-                      <button id="convertMarkdownButton" class="copyButton">Convertir Markdown y Copiar</button>
-                      <button id="undoButton" class="copyButton">Deshacer</button>
-                      <button id="clearButton" class="copyButton">Limpiar texto</button>
-                      
-                    </div>
-                    <div id="statsContainer">
-          <div class="statItem">
-            <div>Palabras</div>
-            <div id="wordCount" class="statValue">0</div>
-          </div>
-          <div class="statItem">
-            <div>Caracteres</div>
-            <div id="charCount" class="statValue">0</div>
-          </div>
-          <div class="statItem">
-            <div>Frases</div>
-            <div id="sentenceCount" class="statValue">0</div>
-          </div>
-          <div class="statItem">
-            <div>Palabras/Frase</div>
-            <div id="avgWordsPerSentence" class="statValue">0</div>
-          </div>
-          <div class="statItem">
-            <div>Párrafos</div>
-            <div id="paragraphCount" class="statValue">0</div>
-          </div>
-          <div class="statItem">
-            <div>Tokens</div>
-            <div id="tokenCount" class="statValue">0</div>
-          </div>
-          <div class="statItem">
-            <div>Tiempo de lectura</div>
-            <div id="readTime" class="statValue">0 min 0 seg</div>
-          </div>
-      
-        <div id="interpretation">Resumen: Analizando texto...</div>
-
-                    <div id="styleInfo"></div>
-                  </div>
-
-
-    <div id="footer" class="footer">
-  <span>Creado por <a href="https://bsky.app/profile/ernestob.bsky.social" target="_blank" rel="noopener noreferrer">@ernestob</a> | Version: <span id="version">1.0.0</span> | <a href="https://github.com/ernestobarrera/Bookmarklet-Notas" target="_blank" rel="noopener noreferrer">Ver en GitHub</a></span>
+                 <div id="fixedPanel">
+  <div id="statsContainer">
+    <div class="stats-row">
+      <div class="statItem">
+        <div>Palabras</div>
+        <div id="wordCount" class="statValue">0</div>
+      </div>
+      <div class="statItem">
+        <div>Caracteres</div>
+        <div id="charCount" class="statValue">0</div>
+      </div>
+      <div class="statItem">
+        <div>Frases</div>
+        <div id="sentenceCount" class="statValue">0</div>
+      </div>
+      <div class="statItem">
+        <div>Palabras/Frase</div>
+        <div id="avgWordsPerSentence" class="statValue">0</div>
+      </div>
+      <div class="statItem">
+        <div>Párrafos</div>
+        <div id="paragraphCount" class="statValue">0</div>
+      </div>
+      <div class="statItem">
+        <div>Tokens</div>
+        <div id="tokenCount" class="statValue">0</div>
+      </div>
+      <div class="statItem">
+        <div>Tiempo de lectura</div>
+        <div id="readTime" class="statValue">0 min 0 seg</div>
+      </div>
+    </div>
+    <div id="interpretation">Resumen: Analizando texto...</div>
+  </div>
+  <div id="buttonContainer">
+    <button id="copyPlainButton" class="copyButton">Copiar texto plano</button>
+    <button id="copyRichButton" class="copyButton">Copiar texto enriquecido</button>
+    <button id="convertMarkdownButton" class="copyButton">Convertir Markdown y Copiar</button>
+    <button id="undoButton" class="copyButton">Deshacer</button>
+    <button id="clearButton" class="copyButton">Limpiar texto</button>
+  </div>
+  <div class="footer">
+    Creado por <a href="https://bsky.app/profile/ernestob.bsky.social" target="_blank" rel="noopener noreferrer">@ernestob</a> | Version: <span id="version">1.0.0</span> | <a href="https://github.com/ernestobarrera/Bookmarklet-Notas" target="_blank" rel="noopener noreferrer">Ver en GitHub</a>
+  </div>
 </div>
                 </body>
               </html>
@@ -712,7 +900,94 @@ javascript: /*!
       this.document.getElementById('convertMarkdownButton').addEventListener('click', convertMarkdownAndCopy.bind(this));
       this.document.getElementById('clearButton').addEventListener('click', clearText.bind(this));
       this.document.getElementById('undoButton').addEventListener('click', undo.bind(this));
+      const toggleInstructionsBtn = this.document.getElementById('toggleInstructions');
+      const instructions = this.document.getElementById('instructions');
+      toggleInstructionsBtn.addEventListener('click', function () {
+        const wasHidden = instructions.classList.contains('hidden');
+        instructions.classList.toggle('hidden');
+        if (wasHidden) {
+          const currentScroll = notepad.scrollTop;
+          if (currentScroll > 0) {
+            notepad.style.scrollBehavior = 'smooth';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            notepad.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(function () { notepad.style.scrollBehavior = 'auto'; }, 500);
+          }
+        }
+      });
+      let lastScrollTop = 0;
+      notepad.addEventListener('scroll', function () {
+        const fixedPanel = this.document.getElementById('fixedPanel');
+        const currentScroll = notepad.scrollTop;
 
+        if (currentScroll > lastScrollTop && currentScroll > 100) {
+          fixedPanel.classList.add('minimized');
+        } else {
+          fixedPanel.classList.remove('minimized');
+        }
+
+        lastScrollTop = currentScroll;
+      }.bind(this));
+      notepad.addEventListener('paste', function (e) {
+        e.preventDefault();
+
+        let content = e.clipboardData.getData('text/html');
+
+        if (content) {
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = content;
+
+          const scripts = tempDiv.getElementsByTagName('script');
+          const styles = tempDiv.getElementsByTagName('style');
+          Array.from(scripts).forEach(script => script.remove());
+          Array.from(styles).forEach(style => style.remove());
+
+          const allowedTags = ['p', 'br', 'div', 'span', 'b', 'strong', 'i', 'em', 'u', 'strike', 'sub', 'sup'];
+          const allowedStyles = ['font-weight', 'font-style', 'text-decoration', 'color', 'background-color'];
+
+          function cleanNode(node) {
+            if (node.nodeType === 3) return;
+
+            const attrs = node.attributes;
+            if (attrs) {
+              Array.from(attrs).forEach(attr => {
+                if (attr.name !== 'style') {
+                  node.removeAttribute(attr.name);
+                }
+              });
+
+              if (node.style) {
+                const styles = node.style;
+                Array.from(styles).forEach(style => {
+                  if (!allowedStyles.includes(style)) {
+                    styles.removeProperty(style);
+                  }
+                });
+              }
+            }
+
+            Array.from(node.children).forEach(cleanNode);
+          }
+
+          cleanNode(tempDiv);
+
+          this.document.execCommand('insertHTML', false, tempDiv.innerHTML);
+        } else {
+          content = e.clipboardData.getData('text/rtf') ||
+            e.clipboardData.getData('application/rtf');
+
+          if (content) {
+            this.document.execCommand('insertHTML', false, content);
+          } else {
+            content = e.clipboardData.getData('text/plain')
+              .replace(/[\r\n]{3,}/g, '\n\n')
+              .replace(/\s{2,}/g, ' ');
+            this.document.execCommand('insertText', false, content);
+          }
+        }
+
+        updateStats.call(this);
+      }.bind(this));
       updateStats.call(this);
     };
   };
