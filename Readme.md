@@ -91,13 +91,16 @@ Probado y verificado en:
      - Control: "borra eso", "detén el dictado"
 
 3. **Formato de Texto**
+
    - Soporta sintaxis Markdown:
+
      ```markdown
      **negrita**, _cursiva_, # títulos
 
      - viñetas
        [enlaces](url)
      ```
+
    - Preserva el formato enriquecido al pegar
 
 ### Características Avanzadas
@@ -192,6 +195,16 @@ Proporciona métricas en tiempo real:
 - Añade documentación apropiada
 - Incluye pruebas unitarias para nuevas características
 
+## ⚠️ Aviso Legal
+
+Este bookmarklet se proporciona como una herramienta de ayuda para el análisis y edición de textos, con especial atención al trabajo con contenidos generados por IA. Si bien se ha desarrollado siguiendo las mejores prácticas y se actualiza regularmente:
+
+- Las métricas de legibilidad y análisis son orientativas y deben considerarse como herramientas de apoyo, no como valores definitivos
+- El usuario es responsable de verificar y validar los resultados según sus necesidades específicas
+- El desarrollo es de código abierto y se beneficia de la retroalimentación de la comunidad para mejoras continuas
+
+El autor no asume responsabilidad por el uso o las consecuencias del uso de esta herramienta, que se ofrece "tal cual", sin garantías de ningún tipo.
+
 ## 📄 Licencia
 
 [Licencia MIT](LICENSE) - siéntete libre de usar este proyecto comercialmente
@@ -202,6 +215,7 @@ Proporciona métricas en tiempo real:
 
 - GitHub: [@ernestobarrera](https://github.com/ernestobarrera)
 - Bluesky: [@ernestob.bsky.social](https://bsky.app/profile/ernestob.bsky.social)
+- Twitter: [@ernestob](https://twitter.com/ernestob)
 
 ---
 
