@@ -860,6 +860,72 @@ javascript: /*!
     notepad.focus();
   };
 
+  async function copyToClipboard(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      showNotification('Texto copiado correctamente');
+    } catch (err) {
+      console.error('Error al copiar:', err);
+      showNotification('Error al copiar el texto', 'error');
+    }
+  }
+
+
+  function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    notification.className = `notification ${type}`;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 3000);
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const convertButton = document.getElementById('convertMarkdownButton');
+    const clearButton = document.getElementById('clearButton');
+    const undoButton = document.getElementById('undoButton');
+    const toggleInstructionsBtn = document.getElementById('toggleInstructions');
+    const instructions = document.getElementById('instructions');
+    const notepad = document.getElementById('notepad');
+
+    if (convertButton) {
+      convertButton.addEventListener('click', async function () {
+        const text = notepad.value;
+        const converted = convertMarkdown(text);
+        await copyToClipboard(converted);
+      });
+    }
+
+    if (clearButton) {
+      clearButton.addEventListener('click', function () {
+        if (confirm('¿Estás seguro de que deseas borrar todo el texto?')) {
+          notepad.value = '';
+        }
+      });
+    }
+
+    if (undoButton && typeof undo === 'function') {
+      undoButton.addEventListener('click', undo);
+    }
+
+    if (toggleInstructionsBtn && instructions) {
+      toggleInstructionsBtn.addEventListener('click', function () {
+        const wasHidden = instructions.classList.contains('hidden');
+        instructions.classList.toggle('hidden');
+
+        if (wasHidden && notepad) {
+          const currentScroll = notepad.scrollTop;
+          if (currentScroll > 0) {
+            notepad.style.scrollBehavior = 'smooth';
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
+          }
+        }
+      });
+    }
+  });
+
   /* Función principal */
   const main = () => {
     /* Detector de idioma */
