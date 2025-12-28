@@ -2,6 +2,28 @@
 
 Todos los cambios notables en Notas.IA🗒️ serán documentados en este archivo.
 
+## [3.1.0] - 2025-12-28
+
+### Añadido
+
+- 🌗 Modo oscuro/claro con detección automática de preferencias del sistema
+- 💾 Exportación a Markdown (.md) además de HTML
+- 🛡️ Mejor compatibilidad con CSP (Content Security Policy) usando Blob URLs
+- 📊 Conteo de oraciones mejorado usando `Intl.Segmenter` cuando está disponible
+- 🎨 Variables CSS para temas dinámicos
+- 🔗 Footer con enlaces a GitHub y Bluesky
+
+### Cambiado
+
+- Arquitectura refactorizada para mejor bypass de CSP
+- Interfaz de usuario simplificada y más compacta
+- Instrucciones más concisas
+
+### Corregido
+
+- Compatibilidad con sitios que tienen políticas CSP estrictas
+- Manejo seguro de HTML con Trusted Types
+
 ## [1.0.0] - 2024-12-15
 
 ### Añadido
