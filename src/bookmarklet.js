@@ -1,11 +1,9 @@
-/*!
+javascript:/*!
  * Smart Editor Pro v3.1 (CSP Bypass Edition)
  * Autor: Ernesto Barrera
  * Updated: 2025-01-11
  * 
- * IMPORTANTE: Este es el código FUENTE legible.
- * Para usar como bookmarklet, debe ser minificado y URL-encoded.
- * La versión de producción está en: dist/bookmarklet.min.js
+ * Copiar todo el contenido de este archivo para usar como bookmarklet.
  */
 (function () {
     'use strict';

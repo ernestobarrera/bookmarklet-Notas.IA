@@ -57,29 +57,17 @@ Notas.IA🗒️ es un editor de notas avanzado que se ejecuta directamente en el
 
 ## 🚀 Instalación
 
-### Estructura del Repositorio
-
-```
-Bookmarklet-Notas/
-├── src/
-│   └── bookmarklet.js      ← Código fuente legible (para editar/contribuir)
-├── dist/
-│   └── bookmarklet.min.js  ← Versión minificada (para usar como bookmarklet)
-└── README.md
-```
-
 ### Crear el Bookmarklet
 
-1. Abre el archivo `dist/bookmarklet.min.js`
-2. Copia **todo** el contenido (es una sola línea)
-3. Crea un nuevo marcador en tu navegador:
+1. Abre el archivo `src/bookmarklet.js`
+2. Selecciona **TODO** el contenido (`Ctrl+A`)
+3. Copia (`Ctrl+C`)
+4. Crea un nuevo marcador en tu navegador:
    ```
    Clic derecho en la barra de marcadores → Añadir página/Nuevo marcador
    Nombre: Notas.IA 🗒️ (o el nombre que prefieras)
-   URL: [Pega el código del bookmarklet]
+   URL: [Pega el código copiado]
    ```
-
-> **Nota para desarrolladores**: Si quieres modificar el código, edita `src/bookmarklet.js` y luego minifícalo para generar la versión en `dist/`.
 
 ### Compatibilidad con Navegadores
 
@@ -235,4 +223,4 @@ El autor no asume responsabilidad por el uso o las consecuencias del uso de esta
 
 ---
 
-_Última actualización: Diciembre 2024_
+_Última actualización: Diciembre 2025_
