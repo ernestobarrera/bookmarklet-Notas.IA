@@ -935,7 +935,7 @@ javascript:/*!
                     <button id="clearButton" class="copyButton" style="background-color:#F44336">Limpiar</button>
                 </div>
                 <div style="font-size:0.7rem;text-align:center;color:var(--stat-text);margin-top:5px">
-                    Panel minimizable al hacer click fuera de los botones
+                    <a href="https://github.com/ernestobarrera/Bookmarklet-Notas" target="_blank" style="color:var(--stat-value);text-decoration:none">@ernestob</a> · v3.1
                 </div>
             </div>
             <script>

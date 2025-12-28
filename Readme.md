@@ -211,7 +211,7 @@ El autor no asume responsabilidad por el uso o las consecuencias del uso de esta
 
 ## 📄 Licencia
 
-[Licencia MIT](LICENSE) - siéntete libre de usar este proyecto comercialmente
+[Licencia MIT](LICENSE)
 
 ## 👤 Autor
 
